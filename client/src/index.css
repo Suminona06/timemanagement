@@ -1,0 +1,112 @@
+/* ── Google Fonts import — must precede all other statements ──────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ────────────────────────────────────────────────── */
+:root {
+  --timer-ring-size: 280px;
+  --sidebar-width: 240px;
+  --topnav-height: 56px;
+}
+
+/* ── Base Styles ──────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-sans antialiased bg-surface-100 text-slate-800
+           dark:bg-surface-900 dark:text-surface-200;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Scrollbar styling for dark mode */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-surface-500;
+  }
+
+  /* Focus ring consistent with brand */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-surface-900;
+  }
+}
+
+/* ── Reusable Component Utilities ─────────────────────────────────────────── */
+@layer components {
+  /* Card surface */
+  .card {
+    @apply bg-white dark:bg-surface-800 rounded-xl border border-slate-200
+           dark:border-surface-700 shadow-sm;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
+           bg-primary-500 hover:bg-primary-600 active:bg-primary-700
+           text-white text-sm font-medium
+           transition-colors duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Ghost / outline button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
+           bg-transparent hover:bg-surface-100 dark:hover:bg-surface-700
+           text-slate-700 dark:text-surface-300 text-sm font-medium
+           border border-slate-200 dark:border-surface-600
+           transition-colors duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Danger / destructive button */
+  .btn-danger {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
+           bg-danger-500 hover:bg-danger-600 active:bg-danger-700
+           text-white text-sm font-medium
+           transition-colors duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Form input */
+  .input {
+    @apply w-full px-3 py-2 rounded-lg text-sm
+           bg-white dark:bg-surface-700
+           border border-slate-200 dark:border-surface-600
+           text-slate-800 dark:text-surface-200
+           placeholder:text-slate-400 dark:placeholder:text-surface-500
+           focus:border-primary-500 dark:focus:border-primary-400
+           focus:ring-1 focus:ring-primary-500
+           transition-colors duration-150;
+  }
+
+  /* Form label */
+  .label {
+    @apply block text-xs font-medium text-slate-600 dark:text-surface-400 mb-1;
+  }
+
+  /* Badge pill */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+}
+
+/* ── SVG Timer Ring ───────────────────────────────────────────────────────── */
+@layer utilities {
+  .timer-ring-transition {
+    transition: stroke-dashoffset 1s linear;
+  }
+}
