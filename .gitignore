@@ -1,26 +1,44 @@
+# ──────────────────────────────────────────
 # Dependencies
+# ──────────────────────────────────────────
 node_modules/
+**/node_modules/
 /.pnp
 .pnp.js
 
+# ──────────────────────────────────────────
 # Environment variables
+# ──────────────────────────────────────────
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+server/.env
+client/.env
+client/.env.local
 
-# Production / Build
+# ──────────────────────────────────────────
+# Production / Build outputs
+# ──────────────────────────────────────────
 /dist
 /build
+dist/
+build/
+client/dist/
 *.log
+npm-debug.log*
 
+# ──────────────────────────────────────────
 # IDE & Editor files
+# ──────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
 
+# ──────────────────────────────────────────
 # OS files
+# ──────────────────────────────────────────
 .DS_Store
 Thumbs.db
