@@ -7,6 +7,9 @@ import LoginView    from './features/auth/LoginView';
 import RegisterView from './features/auth/RegisterView';
 import ProtectedRoute from './features/auth/ProtectedRoute';
 
+// ── Feature views ──────────────────────────────────────────────────────────────
+import TasksView from './features/tasks/TasksView';
+
 /**
  * App.jsx — Root router and route definitions.
  *
@@ -46,7 +49,7 @@ function App() {
         {/* ── Protected routes (wrapped inside AppShell) ────────────────── */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" icon="📊" />} />
-          <Route path="/tasks"     element={<PlaceholderPage title="Tasks" icon="✅" />} />
+          <Route path="/tasks"     element={<TasksView />} />
           <Route path="/timer"     element={<PlaceholderPage title="Focus Timer" icon="⏱" />} />
           <Route path="/calendar"  element={<PlaceholderPage title="Calendar" icon="📅" />} />
           <Route path="/analytics" element={<PlaceholderPage title="Analytics" icon="📈" />} />
