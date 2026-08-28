@@ -261,3 +261,51 @@ To provide a distraction-free, customizable, and high-performance time managemen
 - [ ] Implement dark/light mode toggle.
 - [ ] Add sound alerts & browser notifications for timer completion.
 - [ ] Final testing, bug fixes, and deployment guide (Docker / Vercel + Render).
+
+---
+
+## 10. Extension Feature: Custom Music & Nada Dering (Custom Ringtones & Focus Audio)
+
+### 10.1 Overview & Objective
+Menambahkan fitur kustomisasi audio yang fleksibel ke dalam aplikasi untuk meningkatkan pengalaman fokus dan memberi fleksibilitas kepada pengguna dalam memilih nada dering (alarm chime) saat sesi Pomodoro/timer selesai, serta musik latar (ambient sound / focus music) saat bekerja.
+
+### 10.2 Custom Ringtone & Alarm Notification (Nada Dering Timer)
+- **Built-in Sound Library:** Pilihan nada dering bawaan berkualitas tinggi (contoh: *Zen Bell, Digital Chime, Marimba, Gentle Harp, Arcade Beep, Classic Bell*).
+- **Custom Sound Upload:** Pengguna dapat mengunggah file audio sendiri (`.mp3`, `.wav`, `.ogg`, `.m4a`) untuk dijadikan nada dering.
+- **Audio Assignment:**
+  - Nada dering saat sesi fokus/kerja selesai (*Work Session Complete*).
+  - Nada dering saat waktu istirahat selesai (*Break Session Complete*).
+  - Nada pengingat tugas (*Task Due Reminder*).
+- **Volume & Preview Control:** Slider pengatur volume (0-100%) dan tombol *Test/Preview* suara sebelum disimpan.
+
+### 10.3 Ambient Background Focus Music & Soundscapes
+- **Built-in Ambient Loops:** Pilihan audio fokus latar belakang yang dapat diputar secara berulang (*looping*) di halaman Focus Room (`/timer`), seperti:
+  - *Rain & Thunder*
+  - *Coffee Shop Ambience*
+  - *White Noise / Brown Noise*
+  - *Lo-Fi Beats / Deep Focus Drone*
+  - *Ocean Waves*
+- **Ambient Music Controls:** Widget pemutar musik ambient di Focus Timer (Play, Pause, Volume Terpisah dari Alarm, Loop Toggle).
+- **Custom Audio Track Support:** Kemampuan memutar link streaming audio atau file audio lokal pengguna saat sesi timer berjalan.
+
+### 10.4 Storage & Technical Architecture
+- **Client-Side Storage (IndexedDB / Local Cache):** File audio kustom yang diunggah pengguna disimpan di browser menggunakan `IndexedDB` agar tidak membebani server dan tidak perlu transfer bandwidth berulang.
+- **Audio Engine (HTML5 Audio / Web Audio API):** Menggunakan HTML5 Audio API dengan fallback Web Audio API Synthesizer agar audio tetap berbunyi andal meskipun tab sedang tidak aktif (*background tab*).
+- **Schema Preferences Update (`User.js`):**
+  ```javascript
+  preferences: {
+    // ... existing preferences ...
+    soundEnabled: { type: Boolean, default: true },
+    alarmVolume: { type: Number, default: 80 }, // 0 - 100
+    workAlarmTone: { type: String, default: 'zen-bell' }, // 'zen-bell' | 'digital' | 'marimba' | 'custom'
+    breakAlarmTone: { type: String, default: 'gentle-harp' },
+    ambientSound: { type: String, default: 'none' }, // 'none' | 'rain' | 'cafe' | 'lofi' | 'waves'
+    ambientVolume: { type: Number, default: 50 }
+  }
+  ```
+
+### 10.5 UI/UX Integration Points
+1. **Settings Page (`/settings`):** Tab/Section khusus *Sound & Notifications* dengan audio selector, volume slider, upload custom audio button, dan audio preview player.
+2. **Focus Room (`/timer`):** Ambient sound player widget di bagian pojok bawah atau samping layar dengan tombol cepat ganti suara latar.
+3. **Active Timer Bar:** Ikon mute/unmute cepat untuk nada dering dan background music.
+

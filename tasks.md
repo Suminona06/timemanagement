@@ -49,6 +49,12 @@ graph TD
     
     T6_2 --> T9_1[9.1 Database Seeder Script]
     T9_1 --> T9_2[9.2 End-to-End Verification]
+
+    T8_2 --> T10_1[10.1 Audio Engine & Preset Library]
+    T10_1 --> T10_2[10.2 Custom Audio Upload & IndexedDB Store]
+    T10_2 --> T10_3[10.3 Sound Settings & Tone Selector]
+    T10_1 --> T10_4[10.4 Ambient Focus Music Player]
+    T10_3 --> T10_5[10.5 Audio Preferences & State Sync]
 ```
 
 ---
@@ -357,3 +363,57 @@ graph TD
     5. **Calendar View:** Verify time logs appear in correct hourly time-blocking grid.
     6. **Analytics:** Verify category donut chart matches logged proportions and trend bars show tracked hours vs daily target.
     7. **Theme & Settings:** Toggle dark/light theme -> Change daily goal -> Verify dashboard ring adjusts accordingly.
+
+---
+
+## Phase 10: Custom Music & Nada Dering (Custom Ringtones & Focus Audio)
+
+- [ ] **Task 10.1: Audio Engine Expansion & Preset Tone Library**
+  - **Objective:** Extend audio utility to support high-fidelity preset ringtones, synthesizer fallback, and sound effect triggers.
+  - **Target Files:** `client/src/utils/audioLibrary.js`, `client/src/hooks/useSoundNotification.js`
+  - **Detailed Steps:**
+    1. Create `audioLibrary.js` containing built-in synthesized/pre-rendered audio tones: *Zen Bell*, *Digital Alarm*, *Marimba*, *Gentle Harp*, *Arcade Chime*, *Classic Bell*.
+    2. Enhance `useSoundNotification.js` with functions `playAlarmTone(toneKey, volume)`, `previewTone(toneKey, volume)`, and `stopAlarm()`.
+    3. Handle audio playback permissions, volume normalization (0.0 to 1.0), and background tab audio handling.
+  - **Acceptance Criteria:** Preset ringtones play cleanly on demand and test/preview triggers work without audio clipping.
+
+- [ ] **Task 10.2: Custom Sound Upload & Client-Side Audio Storage (IndexedDB)**
+  - **Objective:** Allow users to upload their own audio files (`.mp3`, `.wav`, `.ogg`, `.m4a`) and persist them locally in the browser.
+  - **Target Files:** `client/src/utils/audioStorage.js`, `client/src/stores/audioStore.js`
+  - **Detailed Steps:**
+    1. Build `audioStorage.js` using `IndexedDB` (or local file blob cache) to store custom audio blobs keyed by ID/name.
+    2. Implement `audioStore.js` (Zustand) managing custom sound list, active preview state, and background audio playing state.
+    3. Add audio file validator (file size limit <= 10MB, mime type check: `audio/*`).
+  - **Acceptance Criteria:** Custom audio file can be uploaded, stored in IndexedDB, and retrieved for playback across browser sessions.
+
+- [ ] **Task 10.3: Sound & Ringtone Customizer in Settings View**
+  - **Objective:** Build interactive UI in `/settings` to configure tones for Work End, Break End, volume sliders, and custom upload.
+  - **Target Files:** `client/src/features/settings/components/SoundSettingsSection.jsx`, `client/src/features/settings/SettingsView.jsx`
+  - **Detailed Steps:**
+    1. Create `SoundSettingsSection.jsx` featuring:
+       - Master sound enable/disable toggle.
+       - Work Complete Ringtone dropdown (Preset list + Custom uploaded sounds) with Play/Stop preview button.
+       - Break Complete Ringtone dropdown with preview button.
+       - Alarm Volume slider (0 - 100%).
+       - File dropzone / upload button for adding new custom ringtones with delete option.
+    2. Integrate `SoundSettingsSection` into `SettingsView.jsx`.
+  - **Acceptance Criteria:** User can preview, select, upload custom sounds, and save their ringtone preferences.
+
+- [ ] **Task 10.4: Ambient Focus Music & Soundscapes Player (`/timer`)**
+  - **Objective:** Add ambient sound / focus music player widget in Focus Room for deep work sessions.
+  - **Target Files:** `client/src/features/timer/components/AmbientSoundPlayer.jsx`, `client/src/features/timer/FocusTimerView.jsx`
+  - **Detailed Steps:**
+    1. Create `AmbientSoundPlayer.jsx` offering ambient loops (*Rain*, *Cafe Ambience*, *White Noise*, *Lo-Fi Beats*, *Waves*).
+    2. Provide play/pause toggle, volume slider, track switcher, and auto-pause when timer is paused/idle (optional setting).
+    3. Integrate ambient widget into `FocusTimerView.jsx` with collapsible/minimalist layout.
+  - **Acceptance Criteria:** Ambient track loops seamlessly during active focus sessions with independent volume control.
+
+- [ ] **Task 10.5: Audio Preferences Schema & Server Sync**
+  - **Objective:** Extend User model preferences and backend auth routes to save user's tone selections and audio settings.
+  - **Target Files:** `server/src/models/User.js`, `server/src/controllers/authController.js`, `client/src/stores/authStore.js`
+  - **Detailed Steps:**
+    1. Update `server/src/models/User.js` preferences schema with `alarmVolume`, `workAlarmTone`, `breakAlarmTone`, `ambientSound`, and `ambientVolume`.
+    2. Verify `PUT /api/auth/preferences` persists new audio attributes.
+    3. Ensure `authStore.js` rehydrates audio preferences upon login and syncs updates.
+  - **Acceptance Criteria:** Selected ringtone and volume preferences persist across logins and devices.
+
