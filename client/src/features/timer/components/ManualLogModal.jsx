@@ -13,7 +13,13 @@ import { formatMinutes } from '../../../utils/timeFormatters';
  *  onClose   — Callback to close modal
  *  onSuccess — Optional callback upon successful creation
  */
-export default function ManualLogModal({ isOpen, onClose, onSuccess }) {
+export default function ManualLogModal({
+  isOpen,
+  onClose,
+  onSuccess,
+  initialDate,
+  initialStartTime,
+}) {
   const { tasks, categories, loadTasks } = useTaskStore();
 
   const getTodayDateString = () => new Date().toISOString().slice(0, 10);
@@ -30,6 +36,22 @@ export default function ManualLogModal({ isOpen, onClose, onSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  // Reset or initialize values when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const activeDate = initialDate || getTodayDateString();
+      const activeStart = initialStartTime || '09:00';
+      setDate(activeDate);
+      setStartTime(activeStart);
+
+      // Compute end time +1 hour by default
+      const [h, m] = activeStart.split(':').map(Number);
+      const endH = (h + 1) % 24;
+      const pad = (n) => String(n).padStart(2, '0');
+      setEndTime(`${pad(endH)}:${pad(m)}`);
+    }
+  }, [isOpen, initialDate, initialStartTime]);
 
   // Auto-calculate duration whenever startTime or endTime changes
   useEffect(() => {
