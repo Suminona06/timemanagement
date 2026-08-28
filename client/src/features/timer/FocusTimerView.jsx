@@ -1,44 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
-import { PlusCircle, Bell, Sparkles, CheckCircle2, History } from 'lucide-react';
+import { PlusCircle, Bell, BellOff, Sparkles, CheckCircle2 } from 'lucide-react';
 import useTimer from '../../hooks/useTimer';
 import useTaskStore from '../../stores/taskStore';
 import useAuthStore from '../../stores/authStore';
+import useSoundNotification from '../../hooks/useSoundNotification';
+import useBrowserNotification from '../../hooks/useBrowserNotification';
 import { createTimeLog } from '../../services/timeLogService';
 import TimerWheel from './components/TimerWheel';
 import PomodoroControls from './components/PomodoroControls';
 import ActiveTaskCard from './components/ActiveTaskCard';
 import ManualLogModal from './components/ManualLogModal';
-
-/**
- * Play a gentle audio chime when a focus session concludes using Web Audio API.
- */
-function playChimeSound() {
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    osc.type = 'sine';
-    // Pleasant dual-frequency melodic chime
-    osc.frequency.setValueAtTime(587.33, now); // D5
-    osc.frequency.setValueAtTime(880, now + 0.15); // A5
-
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start(now);
-    osc.stop(now + 1.2);
-  } catch (err) {
-    console.warn('Audio playback not supported or allowed yet:', err);
-  }
-}
 
 /**
  * FocusTimerView — Dedicated Focus Room view for stopwatch and Pomodoro tracking.
@@ -47,16 +18,23 @@ export default function FocusTimerView() {
   const { user } = useAuthStore();
   const { tasks, loadTasks, init } = useTaskStore();
 
+  const { playWorkCompleteChime, playBreakCompleteChime } = useSoundNotification();
+  const { isSupported, isGranted, requestPermission, sendNotification } = useBrowserNotification();
+
   const [isManualModalOpen, setIsManualModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
 
-  // Handle Pomodoro session expiration
+  // Handle Pomodoro session expiration (triggers both audio and desktop notification)
   const handleSessionExpire = useCallback(() => {
-    if (user?.preferences?.soundEnabled !== false) {
-      playChimeSound();
-    }
-  }, [user]);
+    // 1. Play synthesized audio chime
+    playWorkCompleteChime();
+
+    // 2. Fire system desktop notification
+    sendNotification('Focus Session Complete! 🎉', {
+      body: 'Great job staying in flow! Take a break or continue your momentum.',
+    });
+  }, [playWorkCompleteChime, sendNotification]);
 
   const timer = useTimer({ onExpire: handleSessionExpire });
 
@@ -111,7 +89,7 @@ export default function FocusTimerView() {
   return (
     <div className="flex flex-col items-center justify-between min-h-full py-2 gap-8 max-w-4xl mx-auto">
       {/* Top Header Row */}
-      <div className="w-full flex items-center justify-between border-b border-surface-800 pb-4">
+      <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-surface-800 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-surface-100 flex items-center gap-2">
             <Sparkles size={22} className="text-primary-400" />
@@ -122,14 +100,28 @@ export default function FocusTimerView() {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsManualModalOpen(true)}
-          className="btn-ghost text-xs gap-1.5"
-          title="Log historical time entry"
-        >
-          <PlusCircle size={14} />
-          Log Manual Time
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {/* Desktop Notification Permission Toggle */}
+          {isSupported && !isGranted && (
+            <button
+              onClick={requestPermission}
+              className="btn-ghost text-xs py-1.5 px-2.5 gap-1.5 text-amber-400 hover:text-amber-300 border-amber-500/30"
+              title="Enable desktop notifications for timer completion"
+            >
+              <Bell size={13} />
+              Enable Alerts
+            </button>
+          )}
+
+          <button
+            onClick={() => setIsManualModalOpen(true)}
+            className="btn-ghost text-xs gap-1.5"
+            title="Log historical time entry"
+          >
+            <PlusCircle size={14} />
+            Log Manual Time
+          </button>
+        </div>
       </div>
 
       {/* Save Success Alert */}
