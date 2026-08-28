@@ -43,7 +43,13 @@ const getTasks = async (req, res, next) => {
     if (dueDateStart || dueDateEnd) {
       filter.dueDate = {};
       if (dueDateStart) filter.dueDate.$gte = new Date(dueDateStart);
-      if (dueDateEnd)   filter.dueDate.$lte = new Date(dueDateEnd);
+      if (dueDateEnd) {
+        const end = new Date(dueDateEnd);
+        if (dueDateEnd.length === 10) {
+          end.setHours(23, 59, 59, 999);
+        }
+        filter.dueDate.$lte = end;
+      }
     }
 
     // ── Build sort object ────────────────────────────────────────────────────
