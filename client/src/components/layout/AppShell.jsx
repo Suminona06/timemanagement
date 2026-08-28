@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -11,9 +11,14 @@ import {
   Clock,
   Menu,
   X,
+  Search,
 } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
+import useTimerStore from '../../stores/timerStore';
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts';
 import ActiveTimerBar from './ActiveTimerBar';
+import CommandPalette from '../common/CommandPalette';
+import TaskFormModal from '../../features/tasks/components/TaskFormModal';
 
 // ── Sidebar navigation items ────────────────────────────────────────────────────
 const NAV_ITEMS = [
@@ -27,21 +32,36 @@ const NAV_ITEMS = [
 
 /**
  * AppShell — Persistent application layout wrapping all authenticated views.
- *
- * Layout:
- *   ┌─────────────────────────────────────────┐
- *   │  TopNav (mobile: hamburger, all: user)  │
- *   ├────────────┬────────────────────────────┤
- *   │  Sidebar   │   Main content (children)  │
- *   │ (desktop)  │                            │
- *   └────────────┴────────────────────────────┘
- *
- * On mobile the sidebar is hidden and toggled via the hamburger button.
  */
 export default function AppShell({ children }) {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
+  const { status, startTimer, pauseTimer, resumeTimer } = useTimerStore();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [taskModalOpen, setTaskModalOpen] = useState(false);
+
+  // Keyboard Shortcuts: Toggle timer on Spacebar
+  const handleToggleTimer = useCallback(() => {
+    if (status === 'running') {
+      pauseTimer();
+    } else if (status === 'paused') {
+      resumeTimer();
+    } else {
+      startTimer({ mode: 'pomodoro', targetSeconds: 25 * 60, phase: 'work' });
+    }
+  }, [status, pauseTimer, resumeTimer, startTimer]);
+
+  // Global Keyboard Shortcuts (Cmd+K, Space, Esc)
+  useKeyboardShortcuts({
+    onToggleCommandPalette: () => setCommandPaletteOpen((prev) => !prev),
+    onToggleTimer: handleToggleTimer,
+    onEscape: () => {
+      setCommandPaletteOpen(false);
+      setTaskModalOpen(false);
+    },
+  });
 
   const handleLogout = () => {
     logout();
@@ -50,7 +70,6 @@ export default function AppShell({ children }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-surface-900 text-surface-200">
-
       {/* ── Mobile sidebar backdrop ─────────────────────────────────────── */}
       {sidebarOpen && (
         <div
@@ -72,7 +91,7 @@ export default function AppShell({ children }) {
       >
         {/* Brand */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-surface-700">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-500 text-white shrink-0">
+          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-500 text-white shrink-0 shadow-md shadow-primary-500/20">
             <Clock size={18} />
           </div>
           <span className="text-base font-semibold text-surface-100 tracking-tight">
@@ -99,7 +118,7 @@ export default function AppShell({ children }) {
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                  transition-colors duration-150
                  ${isActive
-                   ? 'bg-primary-500/15 text-primary-400'
+                   ? 'bg-primary-500/15 text-primary-400 font-semibold'
                    : 'text-surface-400 hover:bg-surface-700 hover:text-surface-200'
                  }`
               }
@@ -140,7 +159,6 @@ export default function AppShell({ children }) {
 
       {/* ── Main area ───────────────────────────────────────────────────── */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-
         {/* TopNav */}
         <header className="flex items-center justify-between gap-3 px-4 h-14 shrink-0
                            bg-surface-800 border-b border-surface-700">
@@ -152,6 +170,19 @@ export default function AppShell({ children }) {
               aria-label="Open sidebar"
             >
               <Menu size={20} />
+            </button>
+
+            {/* Quick Command Palette Search Button */}
+            <button
+              onClick={() => setCommandPaletteOpen(true)}
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-700/50 hover:bg-surface-700 text-surface-400 hover:text-surface-200 text-xs border border-surface-600/50 transition-colors"
+              title="Open Command Palette (Ctrl+K / Cmd+K)"
+            >
+              <Search size={13} />
+              <span>Search or jump to...</span>
+              <kbd className="ml-1 text-[10px] font-mono bg-surface-800 px-1.5 py-0.5 rounded border border-surface-700 text-surface-400">
+                ⌘K
+              </kbd>
             </button>
           </div>
 
@@ -177,6 +208,18 @@ export default function AppShell({ children }) {
           {children}
         </main>
       </div>
+
+      {/* ── Global Modals ──────────────────────────────────────────────── */}
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        onNewTask={() => setTaskModalOpen(true)}
+      />
+
+      <TaskFormModal
+        isOpen={taskModalOpen}
+        onClose={() => setTaskModalOpen(false)}
+      />
     </div>
   );
 }
