@@ -2,19 +2,26 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import useAuthStore from './stores/authStore';
 
+// ── Auth views (public) ────────────────────────────────────────────────────────
+import LoginView    from './features/auth/LoginView';
+import RegisterView from './features/auth/RegisterView';
+import ProtectedRoute from './features/auth/ProtectedRoute';
+
 /**
  * App.jsx — Root router and route definitions.
  *
- * Current state (Phase 1): placeholder routes with simple text labels.
- * Routes will be replaced with real views as each phase is implemented:
+ * Route structure:
+ *  /login      → LoginView    (public)
+ *  /register   → RegisterView (public)
+ *  /           → Protected wrapper → nested routes rendered inside AppShell
+ *    /dashboard
+ *    /tasks
+ *    /timer
+ *    /calendar
+ *    /analytics
+ *    /settings
  *
- *  Phase 2  → LoginView, RegisterView, ProtectedRoute, AppShell
- *  Phase 3  → TasksView
- *  Phase 4  → FocusTimerView
- *  Phase 5  → CalendarView
- *  Phase 6  → AnalyticsView
- *  Phase 7  → DashboardView
- *  Phase 8  → SettingsView
+ * Phase 3+ views will replace placeholder pages as they are implemented.
  */
 function App() {
   const { checkAuth, theme } = useAuthStore();
@@ -32,52 +39,43 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect root to dashboard */}
+        {/* ── Public routes ─────────────────────────────────────────────── */}
+        <Route path="/login"    element={<LoginView />} />
+        <Route path="/register" element={<RegisterView />} />
+
+        {/* ── Protected routes (wrapped inside AppShell) ────────────────── */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" icon="📊" />} />
+          <Route path="/tasks"     element={<PlaceholderPage title="Tasks" icon="✅" />} />
+          <Route path="/timer"     element={<PlaceholderPage title="Focus Timer" icon="⏱" />} />
+          <Route path="/calendar"  element={<PlaceholderPage title="Calendar" icon="📅" />} />
+          <Route path="/analytics" element={<PlaceholderPage title="Analytics" icon="📈" />} />
+          <Route path="/settings"  element={<PlaceholderPage title="Settings" icon="⚙️" />} />
+        </Route>
+
+        {/* ── Redirect root to dashboard ────────────────────────────────── */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        {/* ── Public routes (Phase 2) ───────────────────────── */}
-        <Route path="/login"    element={<PlaceholderPage title="Login" />} />
-        <Route path="/register" element={<PlaceholderPage title="Register" />} />
-
-        {/* ── Protected routes (Phase 2+) ──────────────────── */}
-        <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" />} />
-        <Route path="/tasks"     element={<PlaceholderPage title="Tasks" />} />
-        <Route path="/timer"     element={<PlaceholderPage title="Focus Timer" />} />
-        <Route path="/calendar"  element={<PlaceholderPage title="Calendar" />} />
-        <Route path="/analytics" element={<PlaceholderPage title="Analytics" />} />
-        <Route path="/settings"  element={<PlaceholderPage title="Settings" />} />
-
-        {/* ── 404 Catch-all ─────────────────────────────────── */}
-        <Route path="*" element={<PlaceholderPage title="404 — Page Not Found" />} />
+        {/* ── 404 catch-all ─────────────────────────────────────────────── */}
+        <Route path="*" element={<PlaceholderPage title="404 — Page Not Found" icon="🔍" />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
 /**
- * Temporary placeholder used during Phase 1.
- * Replaced by real views in subsequent phases.
+ * Temporary placeholder used until each feature view is implemented.
+ * Replaced phase by phase.
  */
-function PlaceholderPage({ title }) {
+function PlaceholderPage({ title, icon }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center
-                    bg-surface-900 text-surface-200">
-      <div className="card p-10 text-center space-y-4 max-w-sm w-full mx-4">
-        {/* Logo / Brand mark */}
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-primary-500
-                        flex items-center justify-center text-white text-2xl font-bold">
-          ⏱
-        </div>
-        <h1 className="text-xl font-semibold text-surface-100">ChronoCraft</h1>
-        <p className="text-surface-400 text-sm">
-          <span className="font-medium text-primary-400">{title}</span>
-          <br />
-          This page is under construction.
-        </p>
-        <div className="text-xs text-surface-500 pt-2">
-          Task 1.3 — Vite + React + Tailwind scaffold ✅
-        </div>
-      </div>
+    <div className="flex flex-col items-center justify-center h-full min-h-64 text-center
+                    space-y-4 animate-fade-in">
+      <div className="text-5xl">{icon}</div>
+      <h2 className="text-xl font-semibold text-surface-100">{title}</h2>
+      <p className="text-sm text-surface-500 max-w-xs">
+        This view is coming in an upcoming phase. The AppShell and navigation are live ✅
+      </p>
     </div>
   );
 }
