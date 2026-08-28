@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import useAuthStore from './stores/authStore';
 
 /**
  * App.jsx — Root router and route definitions.
@@ -15,6 +17,18 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
  *  Phase 8  → SettingsView
  */
 function App() {
+  const { checkAuth, theme } = useAuthStore();
+
+  // ── On mount: verify persisted token is still valid ──────────────────────
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  // ── Apply theme class to <html> on every theme change ────────────────────
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
   return (
     <BrowserRouter>
       <Routes>
