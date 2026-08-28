@@ -59,15 +59,15 @@ app.get('/api/health', (req, res) => {
 });
 
 // ─── API Routes ───────────────────────────────────────────────────────────────
-// Routes will be mounted here as they are implemented in later phases:
-//
-// const authRoutes      = require('./routes/authRoutes');
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
+// Routes to be mounted as later phases are implemented:
 // const categoryRoutes  = require('./routes/categoryRoutes');
 // const taskRoutes      = require('./routes/taskRoutes');
 // const timeLogRoutes   = require('./routes/timeLogRoutes');
 // const analyticsRoutes = require('./routes/analyticsRoutes');
 //
-// app.use('/api/auth',      authRoutes);
 // app.use('/api/categories', categoryRoutes);
 // app.use('/api/tasks',     taskRoutes);
 // app.use('/api/timelogs',  timeLogRoutes);
