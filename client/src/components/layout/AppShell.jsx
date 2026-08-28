@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
+import ActiveTimerBar from './ActiveTimerBar';
 
 // ── Sidebar navigation items ────────────────────────────────────────────────────
 const NAV_ITEMS = [
@@ -141,19 +142,23 @@ export default function AppShell({ children }) {
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
 
         {/* TopNav */}
-        <header className="flex items-center gap-3 px-4 h-14 shrink-0
+        <header className="flex items-center justify-between gap-3 px-4 h-14 shrink-0
                            bg-surface-800 border-b border-surface-700">
-          {/* Hamburger — mobile only */}
-          <button
-            className="lg:hidden text-surface-400 hover:text-surface-200 transition-colors"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open sidebar"
-          >
-            <Menu size={20} />
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Hamburger — mobile only */}
+            <button
+              className="lg:hidden text-surface-400 hover:text-surface-200 transition-colors"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <Menu size={20} />
+            </button>
+          </div>
 
-          {/* Page title placeholder — views can override via <title> */}
-          <div className="flex-1" />
+          {/* Active Timer Bar ticker */}
+          <div className="flex items-center justify-center">
+            <ActiveTimerBar />
+          </div>
 
           {/* Right-side: user avatar chip */}
           <div className="flex items-center gap-2">

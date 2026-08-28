@@ -8,7 +8,8 @@ import RegisterView from './features/auth/RegisterView';
 import ProtectedRoute from './features/auth/ProtectedRoute';
 
 // ── Feature views ──────────────────────────────────────────────────────────────
-import TasksView from './features/tasks/TasksView';
+import TasksView      from './features/tasks/TasksView';
+import FocusTimerView from './features/timer/FocusTimerView';
 
 /**
  * App.jsx — Root router and route definitions.
@@ -50,7 +51,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" icon="📊" />} />
           <Route path="/tasks"     element={<TasksView />} />
-          <Route path="/timer"     element={<PlaceholderPage title="Focus Timer" icon="⏱" />} />
+          <Route path="/timer"     element={<FocusTimerView />} />
           <Route path="/calendar"  element={<PlaceholderPage title="Calendar" icon="📅" />} />
           <Route path="/analytics" element={<PlaceholderPage title="Analytics" icon="📈" />} />
           <Route path="/settings"  element={<PlaceholderPage title="Settings" icon="⚙️" />} />
