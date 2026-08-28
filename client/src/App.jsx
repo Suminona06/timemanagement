@@ -8,6 +8,7 @@ import RegisterView from './features/auth/RegisterView';
 import ProtectedRoute from './features/auth/ProtectedRoute';
 
 // ── Feature views ──────────────────────────────────────────────────────────────
+import DashboardView  from './features/dashboard/DashboardView';
 import TasksView      from './features/tasks/TasksView';
 import FocusTimerView from './features/timer/FocusTimerView';
 import CalendarView   from './features/calendar/CalendarView';
@@ -51,7 +52,7 @@ function App() {
 
         {/* ── Protected routes (wrapped inside AppShell) ────────────────── */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<PlaceholderPage title="Dashboard" icon="📊" />} />
+          <Route path="/dashboard" element={<DashboardView />} />
           <Route path="/tasks"     element={<TasksView />} />
           <Route path="/timer"     element={<FocusTimerView />} />
           <Route path="/calendar"  element={<CalendarView />} />
