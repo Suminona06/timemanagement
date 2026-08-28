@@ -13,6 +13,7 @@ import TasksView      from './features/tasks/TasksView';
 import FocusTimerView from './features/timer/FocusTimerView';
 import CalendarView   from './features/calendar/CalendarView';
 import AnalyticsView  from './features/analytics/AnalyticsView';
+import SettingsView   from './features/settings/SettingsView';
 
 /**
  * App.jsx — Root router and route definitions.
@@ -57,7 +58,7 @@ function App() {
           <Route path="/timer"     element={<FocusTimerView />} />
           <Route path="/calendar"  element={<CalendarView />} />
           <Route path="/analytics" element={<AnalyticsView />} />
-          <Route path="/settings"  element={<PlaceholderPage title="Settings" icon="⚙️" />} />
+          <Route path="/settings"  element={<SettingsView />} />
         </Route>
 
         {/* ── Redirect root to dashboard ────────────────────────────────── */}
