@@ -31,7 +31,7 @@ async function seedDatabase() {
     } else {
       console.log('👤 Creating demo user account...');
       user = await User.create({
-        username: 'Alex Rivera',
+        username: 'alex_rivera',
         email: demoEmail,
         passwordHash: 'password123', // Will be hashed by User pre-save hook
         preferences: {
