@@ -11,6 +11,7 @@ import ProtectedRoute from './features/auth/ProtectedRoute';
 import TasksView      from './features/tasks/TasksView';
 import FocusTimerView from './features/timer/FocusTimerView';
 import CalendarView   from './features/calendar/CalendarView';
+import AnalyticsView  from './features/analytics/AnalyticsView';
 
 /**
  * App.jsx — Root router and route definitions.
@@ -54,7 +55,7 @@ function App() {
           <Route path="/tasks"     element={<TasksView />} />
           <Route path="/timer"     element={<FocusTimerView />} />
           <Route path="/calendar"  element={<CalendarView />} />
-          <Route path="/analytics" element={<PlaceholderPage title="Analytics" icon="📈" />} />
+          <Route path="/analytics" element={<AnalyticsView />} />
           <Route path="/settings"  element={<PlaceholderPage title="Settings" icon="⚙️" />} />
         </Route>
 
