@@ -22,6 +22,14 @@ import {
  *  isLoading       — True while an async auth action is in flight
  *  error           — Last auth error message (null on success)
  *  theme           — 'dark' | 'light', synced from user.preferences.theme
+ *
+ * Audio preferences (read from user.preferences, synced on every auth action):
+ *  soundEnabled    — Boolean master audio toggle
+ *  alarmVolume     — 0–100 master alarm volume
+ *  workAlarmTone   — Preset key or 'custom:<blobUrl>' for work completion
+ *  breakAlarmTone  — Preset key or 'custom:<blobUrl>' for break completion
+ *  ambientSound    — Active ambient track key ('rain'|'cafe'|'white_noise'|'lofi'|'waves')
+ *  ambientVolume   — 0–100 independent ambient player volume
  */
 const useAuthStore = create(
   persist(
@@ -36,8 +44,9 @@ const useAuthStore = create(
 
       // ── Internal helper ───────────────────────────────────────────────────────
       _setAuth: (user, token) => {
-        const theme = user?.preferences?.theme ?? 'dark';
-        // Apply theme class to <html> element immediately
+        const prefs = user?.preferences || {};
+        const theme = prefs.theme ?? 'dark';
+        // Apply theme class to <html> element immediately on auth state change
         document.documentElement.classList.toggle('dark', theme === 'dark');
         set({ user, token, isAuthenticated: true, error: null, theme });
       },

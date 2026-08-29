@@ -44,6 +44,62 @@ const preferencesSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    // ── Phase 10: Audio Preferences ─────────────────────────────────────────
+    /**
+     * Master alarm volume (0–100). Applied to all completion chimes.
+     */
+    alarmVolume: {
+      type: Number,
+      default: 80,
+      min: [0, 'Alarm volume cannot be below 0'],
+      max: [100, 'Alarm volume cannot exceed 100'],
+    },
+
+    /**
+     * Work session completion tone key.
+     * Built-in preset keys: 'zen_bell' | 'digital_alarm' | 'marimba' | 'gentle_harp' | 'arcade_chime' | 'classic_bell'
+     * Custom audio stored in IndexedDB: 'custom:<blobUrl>' (client-side only)
+     */
+    workAlarmTone: {
+      type: String,
+      default: 'zen_bell',
+      trim: true,
+      maxlength: [512, 'workAlarmTone too long'],
+    },
+
+    /**
+     * Break session completion tone key (same key space as workAlarmTone).
+     */
+    breakAlarmTone: {
+      type: String,
+      default: 'gentle_harp',
+      trim: true,
+      maxlength: [512, 'breakAlarmTone too long'],
+    },
+
+    /**
+     * Last selected ambient soundscape track key.
+     * One of: 'rain' | 'cafe' | 'white_noise' | 'lofi' | 'waves'
+     */
+    ambientSound: {
+      type: String,
+      default: 'rain',
+      enum: {
+        values: ['rain', 'cafe', 'white_noise', 'lofi', 'waves'],
+        message: 'ambientSound must be one of: rain, cafe, white_noise, lofi, waves',
+      },
+    },
+
+    /**
+     * Ambient player volume (0–100), independent from alarmVolume.
+     */
+    ambientVolume: {
+      type: Number,
+      default: 40,
+      min: [0, 'Ambient volume cannot be below 0'],
+      max: [100, 'Ambient volume cannot exceed 100'],
+    },
   },
   { _id: false } // No separate _id for embedded sub-document
 );

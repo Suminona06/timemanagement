@@ -137,19 +137,28 @@ const getMe = async (req, res, next) => {
  * Requires: Bearer token via protect middleware.
  *
  * Body: { dailyGoalHours?, pomodoroWorkMinutes?, pomodoroShortBreakMinutes?,
- *         pomodoroLongBreakMinutes?, longBreakInterval?, theme?, soundEnabled? }
+ *         pomodoroLongBreakMinutes?, longBreakInterval?, theme?, soundEnabled?,
+ *         alarmVolume?, workAlarmTone?, breakAlarmTone?, ambientSound?, ambientVolume? }
  * Response: { success, user }
  */
 const updatePreferences = async (req, res, next) => {
   try {
     const allowedFields = [
+      // Timer settings
       'dailyGoalHours',
       'pomodoroWorkMinutes',
       'pomodoroShortBreakMinutes',
       'pomodoroLongBreakMinutes',
       'longBreakInterval',
+      // UI settings
       'theme',
+      // Audio — Phase 10
       'soundEnabled',
+      'alarmVolume',
+      'workAlarmTone',
+      'breakAlarmTone',
+      'ambientSound',
+      'ambientVolume',
     ];
 
     // Build a safe update object — only allow whitelisted preference fields
