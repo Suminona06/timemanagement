@@ -54,7 +54,9 @@ graph TD
     T10_1 --> T10_2[10.2 Custom Audio Upload & IndexedDB Store]
     T10_2 --> T10_3[10.3 Sound Settings & Tone Selector]
     T10_1 --> T10_4[10.4 Ambient Focus Music Player]
+    T10_4 --> T10_6[10.6 YouTube & Spotify Lo-Fi Embed Player]
     T10_3 --> T10_5[10.5 Audio Preferences & State Sync]
+    T10_6 --> T10_5
 ```
 
 ---
@@ -412,8 +414,20 @@ graph TD
   - **Objective:** Extend User model preferences and backend auth routes to save user's tone selections and audio settings.
   - **Target Files:** `server/src/models/User.js`, `server/src/controllers/authController.js`, `client/src/stores/authStore.js`
   - **Detailed Steps:**
-    1. Update `server/src/models/User.js` preferences schema with `alarmVolume`, `workAlarmTone`, `breakAlarmTone`, `ambientSound`, and `ambientVolume`.
+    1. Update `server/src/models/User.js` preferences schema with `alarmVolume`, `workAlarmTone`, `breakAlarmTone`, `ambientSound`, `ambientVolume`, `ambientSourceType`, `customAmbientUrl`, and `savedMediaLinks`.
     2. Verify `PUT /api/auth/preferences` persists new audio attributes.
     3. Ensure `authStore.js` rehydrates audio preferences upon login and syncs updates.
-  - **Acceptance Criteria:** Selected ringtone and volume preferences persist across logins and devices.
+  - **Acceptance Criteria:** Selected ringtone, ambient music choice, and media URL preferences persist across logins and devices.
+
+- [ ] **Task 10.6: Custom Ambient Lo-Fi & YouTube / Spotify Embed Media Player**
+  - **Objective:** Enable user to input custom Lo-Fi audio files or embed ambient music / live streams from YouTube and Spotify.
+  - **Target Files:** `client/src/features/timer/components/ExternalMediaEmbed.jsx`, `client/src/features/timer/components/AmbientSoundPlayer.jsx`, `client/src/features/settings/components/SoundSettingsSection.jsx`, `client/src/utils/mediaEmbedUtils.js`
+  - **Detailed Steps:**
+    1. Create `mediaEmbedUtils.js` to parse and format YouTube video/stream IDs (handling standard, short, live stream URLs) and Spotify embed URLs (playlists, albums, tracks).
+    2. Build `ExternalMediaEmbed.jsx` with responsive compact iframe container for YouTube and Spotify widgets.
+    3. Add 1-click popular presets (e.g. *Lofi Girl Live*, *Chillhop Radio*, *Spotify Deep Focus*, *Peaceful Piano*).
+    4. Provide custom URL input dialog in both the Focus Timer view and Settings view.
+    5. Allow custom local Lo-Fi file upload saved directly to IndexedDB.
+  - **Acceptance Criteria:** User can embed and listen to YouTube live streams or Spotify playlists directly inside the focus timer room without UI disruption.
+
 

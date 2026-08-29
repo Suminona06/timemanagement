@@ -309,3 +309,30 @@ Menambahkan fitur kustomisasi audio yang fleksibel ke dalam aplikasi untuk menin
 2. **Focus Room (`/timer`):** Ambient sound player widget di bagian pojok bawah atau samping layar dengan tombol cepat ganti suara latar.
 3. **Active Timer Bar:** Ikon mute/unmute cepat untuk nada dering dan background music.
 
+### 10.6 Custom Ambient Sound & External Media Embeds (YouTube & Spotify Lo-Fi)
+- **Kustomisasi Audio Lo-Fi Lokal:**
+  - Pengguna dapat mengunggah file audio lo-fi / musik fokus sendiri (`.mp3`, `.wav`, `.m4a`) yang disimpan di IndexedDB browser untuk diputar secara offline/lokal saat bekerja.
+- **Integrasi YouTube Player (Video & Live Stream):**
+  - Pengguna dapat memasukkan URL video / live stream YouTube (contoh: *Lofi Girl live stream*, *chillhop radio*, *rain sound video*).
+  - Menampilkan mini YouTube IFrame Player / Audio Player di dalam halaman Focus Room (`/timer`).
+  - Opsi auto-sync: audio otomatis play saat timer fokus aktif dan pause saat timer berhenti.
+- **Integrasi Spotify Embed Player (Playlists & Tracks):**
+  - Pengguna dapat memasukkan URL atau URI Spotify (Playlist, Album, atau Track, contoh: `https://open.spotify.com/playlist/...`).
+  - Menampilkan widget mini Spotify Player tersemat (*compact iframe*) yang elegan di Focus Room.
+- **Preset Quick-Select Lo-Fi Channels:**
+  - Menyediakan tombol pintas cepat (*1-click presets*) untuk stream Lo-Fi populer (misal: *Lofi Girl Live*, *Synthwave Chill*, *Peaceful Piano Spotify*, *Deep Focus Lo-Fi*).
+- **Penyimpanan Preferensi Media (`User.js`):**
+  ```javascript
+  preferences: {
+    // ...
+    ambientSourceType: { type: String, enum: ['preset', 'local', 'youtube', 'spotify'], default: 'preset' },
+    customAmbientUrl: { type: String, default: '' },
+    savedMediaLinks: [{
+      title: { type: String },
+      source: { type: String, enum: ['youtube', 'spotify'] },
+      url: { type: String }
+    }]
+  }
+  ```
+
+
