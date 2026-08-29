@@ -10,6 +10,7 @@ import TimerWheel from './components/TimerWheel';
 import PomodoroControls from './components/PomodoroControls';
 import ActiveTaskCard from './components/ActiveTaskCard';
 import ManualLogModal from './components/ManualLogModal';
+import AmbientSoundPlayer from './components/AmbientSoundPlayer';
 
 /**
  * FocusTimerView — Dedicated Focus Room view for stopwatch and Pomodoro tracking.
@@ -158,6 +159,14 @@ export default function FocusTimerView() {
           activeTaskId={activeTaskId}
           onSelectTask={(id) => setActiveTaskId(id)}
           onUnlinkTask={() => setActiveTaskId(null)}
+        />
+      </div>
+
+      {/* ── Ambient Sound Player ─────────────────────────────────────────── */}
+      <div className="w-full">
+        <AmbientSoundPlayer
+          timerStatus={status}
+          autoPauseOnIdle={false}
         />
       </div>
 
