@@ -39,6 +39,7 @@ const useAuthStore = create(
       token: null,
       isAuthenticated: false,
       isLoading: false,
+      isInitializing: true, // True until first checkAuth() resolves — prevents premature redirect
       error: null,
       theme: 'dark',
 
@@ -103,10 +104,18 @@ const useAuthStore = create(
       /**
        * Re-hydrate the user profile from the API using the persisted token.
        * Called on app startup to verify the stored token is still valid.
+       *
+       * IMPORTANT: Always sets isInitializing=false when done — ProtectedRoute
+       * will block rendering until this flag becomes false to prevent premature
+       * redirect-to-login before token verification completes.
        */
       checkAuth: async () => {
         const { token } = get();
-        if (!token) return; // Nothing stored — stay logged out
+        if (!token) {
+          // No stored token — definitely not logged in, unblock immediately
+          set({ isInitializing: false });
+          return;
+        }
 
         set({ isLoading: true });
         try {
@@ -116,7 +125,7 @@ const useAuthStore = create(
           // Token expired or revoked — clear state
           get()._clearAuth();
         } finally {
-          set({ isLoading: false });
+          set({ isLoading: false, isInitializing: false });
         }
       },
 

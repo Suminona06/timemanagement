@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import { Clock } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
 import AppShell from '../../components/layout/AppShell';
 
@@ -6,55 +7,53 @@ import AppShell from '../../components/layout/AppShell';
  * ProtectedRoute — Navigation guard for authenticated-only pages.
  *
  * Behaviour:
- *  - If `isLoading` is true  → show a centered spinner while checkAuth() runs
- *  - If not authenticated    → redirect to /login (replace history so back-button
- *                              doesn't return to the protected page)
- *  - If authenticated        → render <AppShell> with <Outlet /> inside it
+ *  1. While `isInitializing` is true (i.e. checkAuth() hasn't returned yet) →
+ *     Show a full-screen loading spinner. This is the CRITICAL gate that
+ *     prevents premature redirect to /login before token verification completes.
  *
- * Usage in router:
- *   <Route element={<ProtectedRoute />}>
- *     <Route path="/dashboard" element={<DashboardView />} />
- *     <Route path="/tasks"     element={<TasksView />} />
- *     ...
- *   </Route>
+ *  2. If not authenticated (and initialization is done) → redirect to /login
+ *
+ *  3. If authenticated → render <AppShell> with <Outlet /> inside it
+ *
+ * Root Cause Fixed:
+ *  Previously, `isAuthenticated` was false on first render (not persisted to
+ *  localStorage), and `isLoading` only became true *after* checkAuth() was
+ *  called. This created a 1-frame window where ProtectedRoute saw
+ *  `isLoading=false, isAuthenticated=false` and redirected immediately.
+ *
+ *  Fix: `isInitializing` starts as `true` in the store (before any render)
+ *  and is only set to `false` once `checkAuth()` fully resolves.
  */
 export default function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuthStore();
+  const { isAuthenticated, isInitializing, isLoading } = useAuthStore();
 
-  // ── Loading state: checkAuth() is in flight on first app load ─────────────
-  if (isLoading) {
+  // ── Block all rendering until the first auth check is complete ─────────────
+  // This prevents the redirect race condition on page reload.
+  if (isInitializing) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-surface-900">
-        <div className="flex flex-col items-center gap-4">
-          <svg
-            className="animate-spin h-10 w-10 text-primary-500"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <circle
-              className="opacity-25"
-              cx="12" cy="12" r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8H4z"
-            />
-          </svg>
-          <p className="text-sm text-surface-400">Loading ChronoCraft…</p>
+        <div className="flex flex-col items-center gap-4 animate-fade-in">
+          <div className="relative">
+            <div className="w-14 h-14 rounded-2xl bg-primary-500/20 flex items-center justify-center">
+              <Clock size={28} className="text-primary-400" />
+            </div>
+            <div className="absolute -inset-1 rounded-2xl border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-medium text-surface-200">ChronoCraft</p>
+            <p className="text-xs text-surface-500 mt-0.5">Restoring your session…</p>
+          </div>
         </div>
       </div>
     );
   }
 
-  // ── Not authenticated: redirect to login ──────────────────────────────────
+  // ── Not authenticated → redirect to login ──────────────────────────────────
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // ── Authenticated: render shell with nested route content ─────────────────
+  // ── Authenticated → render shell with nested route content ────────────────
   return (
     <AppShell>
       <Outlet />
