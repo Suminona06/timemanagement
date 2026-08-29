@@ -11,12 +11,13 @@ import {
   AlertCircle,
   Loader2,
   HardDrive,
-  Plus,
-  Bell,
+  Link,
+  ExternalLink,
 } from 'lucide-react';
 import useAudioStore from '../../../stores/audioStore';
 import { PRESET_TONES, playPresetTone } from '../../../utils/audioLibrary';
 import { playCustomAudio, stopCustomAudio } from '../../../utils/audioLibrary';
+import { parseMediaUrl, MEDIA_PRESETS } from '../../../utils/mediaEmbedUtils';
 
 // ── Helper: format bytes to human-readable size ──────────────────────────────
 function formatBytes(bytes) {
@@ -64,6 +65,7 @@ function ToneSelector({ label, value, onChange, customSounds }) {
  *   alarmVolume     — 0 to 100
  *   workAlarmTone   — preset key or 'custom:<blobUrl>'
  *   breakAlarmTone  — preset key or 'custom:<blobUrl>'
+ *   savedMediaLinks — array of saved media link objects
  *   onChange(patch) — callback when any value changes (partial object)
  */
 export default function SoundSettingsSection({
@@ -71,6 +73,7 @@ export default function SoundSettingsSection({
   alarmVolume,
   workAlarmTone,
   breakAlarmTone,
+  savedMediaLinks = [],
   onChange,
 }) {
   const {
@@ -446,6 +449,148 @@ export default function SoundSettingsSection({
             <span>IndexedDB not available in this browser — custom sounds cannot be stored.</span>
           </div>
         )}
+      </div>
+
+      {/* ── Saved Media Links (YouTube / Spotify) ────────────────────────── */}
+      <SavedMediaLinksSection
+        savedMediaLinks={savedMediaLinks}
+        onChangeLinks={(links) => onChange({ savedMediaLinks: links })}
+      />
+    </div>
+  );
+}
+
+// ── Saved Media Links sub-section ─────────────────────────────────────────────
+function SavedMediaLinksSection({ savedMediaLinks = [], onChangeLinks }) {
+  const [inputUrl, setInputUrl] = useState('');
+  const [inputError, setInputError] = useState('');
+  const links = Array.isArray(savedMediaLinks) ? savedMediaLinks : [];
+
+  const handleAdd = () => {
+    const trimmed = inputUrl.trim();
+    if (!trimmed) return;
+    const parsed = parseMediaUrl(trimmed);
+    if (!parsed.platform) {
+      setInputError('Not a valid YouTube or Spotify URL.');
+      return;
+    }
+    if (links.find((l) => l.url === trimmed)) {
+      setInputError('This URL is already saved.');
+      return;
+    }
+    setInputError('');
+    setInputUrl('');
+    onChangeLinks([...links, { url: trimmed, label: parsed.label, platform: parsed.platform }]);
+  };
+
+  const handleRemove = (url) => {
+    onChangeLinks(links.filter((l) => l.url !== url));
+  };
+
+  return (
+    <div className="space-y-3 pt-2 border-t border-surface-700/50">
+      <div className="flex items-center gap-2">
+        <Link size={15} className="text-primary-400" />
+        <h3 className="text-xs font-semibold text-surface-200 uppercase tracking-wider">
+          Saved Media Links
+        </h3>
+      </div>
+
+      <p className="text-[10px] text-surface-500">
+        Save YouTube or Spotify links here — they'll appear as quick presets in the Focus Room player.
+      </p>
+
+      {/* Add URL input */}
+      <div className="flex gap-2">
+        <input
+          type="url"
+          value={inputUrl}
+          onChange={(e) => { setInputUrl(e.target.value); setInputError(''); }}
+          onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+          placeholder="YouTube or Spotify URL…"
+          className="input text-xs flex-1"
+        />
+        <button
+          type="button"
+          onClick={handleAdd}
+          className="btn-primary px-3 py-2 text-xs shrink-0"
+        >
+          Save
+        </button>
+      </div>
+
+      {inputError && (
+        <p className="text-[11px] text-danger-400 flex items-center gap-1">
+          <AlertCircle size={12} /> {inputError}
+        </p>
+      )}
+
+      {/* Saved link list */}
+      {links.length > 0 ? (
+        <div className="space-y-1.5">
+          {links.map((link) => (
+            <div
+              key={link.url}
+              className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 group"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase shrink-0 ${
+                  link.platform === 'spotify'
+                    ? 'bg-green-500/20 text-green-400'
+                    : 'bg-red-500/20 text-red-400'
+                }`}>
+                  {link.platform === 'spotify' ? 'SPT' : 'YT'}
+                </span>
+                <span className="text-xs text-surface-300 truncate">{link.label || link.url}</span>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 rounded-lg text-surface-500 hover:text-primary-400 hover:bg-primary-500/10 transition-colors"
+                  title="Open in new tab"
+                >
+                  <ExternalLink size={12} />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleRemove(link.url)}
+                  className="p-1.5 rounded-lg text-surface-500 hover:text-danger-400 hover:bg-danger-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                  title="Remove link"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-[11px] text-surface-600 py-2">
+          No saved links yet. Add a YouTube or Spotify URL above.
+        </p>
+      )}
+
+      {/* Quick add from presets */}
+      <div className="pt-1">
+        <p className="text-[10px] text-surface-500 mb-1.5">Quick add popular stations:</p>
+        <div className="flex flex-wrap gap-1.5">
+          {MEDIA_PRESETS.filter((p) => !links.find((l) => l.url === p.url)).map((preset) => (
+            <button
+              key={preset.key}
+              type="button"
+              onClick={() => {
+                const parsed = parseMediaUrl(preset.url);
+                if (!links.find((l) => l.url === preset.url)) {
+                  onChangeLinks([...links, { url: preset.url, label: parsed.label, platform: parsed.platform }]);
+                }
+              }}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] bg-surface-850 border border-surface-700 text-surface-400 hover:text-surface-200 hover:bg-surface-700 transition-colors"
+            >
+              {preset.emoji} {preset.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

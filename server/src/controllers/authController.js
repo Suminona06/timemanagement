@@ -159,6 +159,9 @@ const updatePreferences = async (req, res, next) => {
       'breakAlarmTone',
       'ambientSound',
       'ambientVolume',
+      'ambientSourceType',
+      'customAmbientUrl',
+      'savedMediaLinks',
     ];
 
     // Build a safe update object — only allow whitelisted preference fields

@@ -370,7 +370,7 @@ graph TD
 
 ## Phase 10: Custom Music & Nada Dering (Custom Ringtones & Focus Audio)
 
-- [ ] **Task 10.1: Audio Engine Expansion & Preset Tone Library**
+- [x] **Task 10.1: Audio Engine Expansion & Preset Tone Library**
   - **Objective:** Extend audio utility to support high-fidelity preset ringtones, synthesizer fallback, and sound effect triggers.
   - **Target Files:** `client/src/utils/audioLibrary.js`, `client/src/hooks/useSoundNotification.js`
   - **Detailed Steps:**
@@ -379,7 +379,7 @@ graph TD
     3. Handle audio playback permissions, volume normalization (0.0 to 1.0), and background tab audio handling.
   - **Acceptance Criteria:** Preset ringtones play cleanly on demand and test/preview triggers work without audio clipping.
 
-- [ ] **Task 10.2: Custom Sound Upload & Client-Side Audio Storage (IndexedDB)**
+- [x] **Task 10.2: Custom Sound Upload & Client-Side Audio Storage (IndexedDB)**
   - **Objective:** Allow users to upload their own audio files (`.mp3`, `.wav`, `.ogg`, `.m4a`) and persist them locally in the browser.
   - **Target Files:** `client/src/utils/audioStorage.js`, `client/src/stores/audioStore.js`
   - **Detailed Steps:**
@@ -388,7 +388,7 @@ graph TD
     3. Add audio file validator (file size limit <= 10MB, mime type check: `audio/*`).
   - **Acceptance Criteria:** Custom audio file can be uploaded, stored in IndexedDB, and retrieved for playback across browser sessions.
 
-- [ ] **Task 10.3: Sound & Ringtone Customizer in Settings View**
+- [x] **Task 10.3: Sound & Ringtone Customizer in Settings View**
   - **Objective:** Build interactive UI in `/settings` to configure tones for Work End, Break End, volume sliders, and custom upload.
   - **Target Files:** `client/src/features/settings/components/SoundSettingsSection.jsx`, `client/src/features/settings/SettingsView.jsx`
   - **Detailed Steps:**
@@ -401,7 +401,7 @@ graph TD
     2. Integrate `SoundSettingsSection` into `SettingsView.jsx`.
   - **Acceptance Criteria:** User can preview, select, upload custom sounds, and save their ringtone preferences.
 
-- [ ] **Task 10.4: Ambient Focus Music & Soundscapes Player (`/timer`)**
+- [x] **Task 10.4: Ambient Focus Music & Soundscapes Player (`/timer`)**
   - **Objective:** Add ambient sound / focus music player widget in Focus Room for deep work sessions.
   - **Target Files:** `client/src/features/timer/components/AmbientSoundPlayer.jsx`, `client/src/features/timer/FocusTimerView.jsx`
   - **Detailed Steps:**
@@ -410,7 +410,7 @@ graph TD
     3. Integrate ambient widget into `FocusTimerView.jsx` with collapsible/minimalist layout.
   - **Acceptance Criteria:** Ambient track loops seamlessly during active focus sessions with independent volume control.
 
-- [ ] **Task 10.5: Audio Preferences Schema & Server Sync**
+- [x] **Task 10.5: Audio Preferences Schema & Server Sync**
   - **Objective:** Extend User model preferences and backend auth routes to save user's tone selections and audio settings.
   - **Target Files:** `server/src/models/User.js`, `server/src/controllers/authController.js`, `client/src/stores/authStore.js`
   - **Detailed Steps:**
@@ -419,7 +419,7 @@ graph TD
     3. Ensure `authStore.js` rehydrates audio preferences upon login and syncs updates.
   - **Acceptance Criteria:** Selected ringtone, ambient music choice, and media URL preferences persist across logins and devices.
 
-- [ ] **Task 10.6: Custom Ambient Lo-Fi & YouTube / Spotify Embed Media Player**
+- [x] **Task 10.6: Custom Ambient Lo-Fi & YouTube / Spotify Embed Media Player**
   - **Objective:** Enable user to input custom Lo-Fi audio files or embed ambient music / live streams from YouTube and Spotify.
   - **Target Files:** `client/src/features/timer/components/ExternalMediaEmbed.jsx`, `client/src/features/timer/components/AmbientSoundPlayer.jsx`, `client/src/features/settings/components/SoundSettingsSection.jsx`, `client/src/utils/mediaEmbedUtils.js`
   - **Detailed Steps:**

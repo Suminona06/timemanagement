@@ -100,6 +100,37 @@ const preferencesSchema = new mongoose.Schema(
       min: [0, 'Ambient volume cannot be below 0'],
       max: [100, 'Ambient volume cannot exceed 100'],
     },
+
+    /**
+     * Source type for ambient focus music.
+     * 'synth' = built-in synthesizer | 'youtube' | 'spotify' | 'custom_file'
+     */
+    ambientSourceType: {
+      type: String,
+      enum: ['synth', 'youtube', 'spotify', 'custom_file'],
+      default: 'synth',
+    },
+
+    /**
+     * Last played custom ambient audio URL or YouTube/Spotify embed link.
+     */
+    customAmbientUrl: {
+      type: String,
+      default: '',
+      trim: true,
+      maxlength: [1024, 'customAmbientUrl too long'],
+    },
+
+    /**
+     * Saved YouTube & Spotify media links for quick access in Focus Room.
+     */
+    savedMediaLinks: [
+      {
+        url: { type: String, required: true },
+        label: { type: String, default: '' },
+        platform: { type: String, enum: ['youtube', 'spotify', 'other'], default: 'other' },
+      },
+    ],
   },
   { _id: false } // No separate _id for embedded sub-document
 );

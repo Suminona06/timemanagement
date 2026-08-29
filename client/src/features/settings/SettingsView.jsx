@@ -37,6 +37,7 @@ export default function SettingsView() {
   const [alarmVolume, setAlarmVolume] = useState(userPrefs.alarmVolume ?? 80);
   const [workAlarmTone, setWorkAlarmTone] = useState(userPrefs.workAlarmTone || 'zen_bell');
   const [breakAlarmTone, setBreakAlarmTone] = useState(userPrefs.breakAlarmTone || 'gentle_harp');
+  const [savedMediaLinks, setSavedMediaLinks] = useState(userPrefs.savedMediaLinks || []);
 
   // ── UI Feedback ────────────────────────────────────────────────────────────
   const [isSaving, setIsSaving] = useState(false);
@@ -58,6 +59,7 @@ export default function SettingsView() {
       setAlarmVolume(p.alarmVolume ?? 80);
       setWorkAlarmTone(p.workAlarmTone || 'zen_bell');
       setBreakAlarmTone(p.breakAlarmTone || 'gentle_harp');
+      setSavedMediaLinks(p.savedMediaLinks || []);
     }
   }, [user]);
 
@@ -69,10 +71,11 @@ export default function SettingsView() {
 
   // ── Patch handler for SoundSettingsSection ─────────────────────────────────
   const handleAudioChange = (patch) => {
-    if ('soundEnabled'  in patch) setSoundEnabled(patch.soundEnabled);
-    if ('alarmVolume'   in patch) setAlarmVolume(patch.alarmVolume);
-    if ('workAlarmTone' in patch) setWorkAlarmTone(patch.workAlarmTone);
-    if ('breakAlarmTone' in patch) setBreakAlarmTone(patch.breakAlarmTone);
+    if ('soundEnabled'    in patch) setSoundEnabled(patch.soundEnabled);
+    if ('alarmVolume'     in patch) setAlarmVolume(patch.alarmVolume);
+    if ('workAlarmTone'   in patch) setWorkAlarmTone(patch.workAlarmTone);
+    if ('breakAlarmTone'  in patch) setBreakAlarmTone(patch.breakAlarmTone);
+    if ('savedMediaLinks' in patch) setSavedMediaLinks(patch.savedMediaLinks);
   };
 
   const handleResetDefaults = () => {
@@ -86,6 +89,7 @@ export default function SettingsView() {
     setAlarmVolume(80);
     setWorkAlarmTone('zen_bell');
     setBreakAlarmTone('gentle_harp');
+    setSavedMediaLinks([]);
     document.documentElement.classList.add('dark');
   };
 
@@ -111,6 +115,7 @@ export default function SettingsView() {
         alarmVolume: Number(alarmVolume),
         workAlarmTone,
         breakAlarmTone,
+        savedMediaLinks,
       });
 
       setFeedbackMsg('Preferences and settings updated successfully!');
@@ -274,6 +279,7 @@ export default function SettingsView() {
             alarmVolume={alarmVolume}
             workAlarmTone={workAlarmTone}
             breakAlarmTone={breakAlarmTone}
+            savedMediaLinks={savedMediaLinks}
             onChange={handleAudioChange}
           />
         </div>

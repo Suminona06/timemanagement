@@ -11,6 +11,7 @@ import PomodoroControls from './components/PomodoroControls';
 import ActiveTaskCard from './components/ActiveTaskCard';
 import ManualLogModal from './components/ManualLogModal';
 import AmbientSoundPlayer from './components/AmbientSoundPlayer';
+import ExternalMediaEmbed from './components/ExternalMediaEmbed';
 
 /**
  * FocusTimerView — Dedicated Focus Room view for stopwatch and Pomodoro tracking.
@@ -168,6 +169,11 @@ export default function FocusTimerView() {
           timerStatus={status}
           autoPauseOnIdle={false}
         />
+      </div>
+
+      {/* ── External Media (YouTube / Spotify) ───────────────────────────── */}
+      <div className="w-full">
+        <ExternalMediaEmbed compact={true} />
       </div>
 
       {/* Manual Time Entry Modal */}
