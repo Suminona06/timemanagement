@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckSquare, X, ArrowRightLeft, Clock, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, ArrowRightLeft, Clock, Sparkles } from 'lucide-react';
 import useTaskStore from '../../../stores/taskStore';
 import Badge from '../../../components/common/Badge';
 import { formatMinutes } from '../../../utils/timeFormatters';
@@ -25,15 +25,15 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
   const progress = estimated > 0 ? Math.min(100, Math.round((actual / estimated) * 100)) : 0;
 
   return (
-    <div className="card p-5 w-full max-w-md bg-surface-800 border-surface-700 space-y-4">
+    <div className="card p-5 w-full max-w-md bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-4">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-surface-400 flex items-center gap-1.5">
-          <Sparkles size={14} className="text-primary-400" />
+        <span className="text-xs font-bold uppercase tracking-wider text-surface-600 dark:text-surface-400 flex items-center gap-1.5">
+          <Sparkles size={14} className="text-primary-500" />
           Active Focus Target
         </span>
         <button
           onClick={() => setIsSwitching(!isSwitching)}
-          className="text-xs text-primary-400 hover:text-primary-300 font-medium flex items-center gap-1 transition-colors"
+          className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold flex items-center gap-1 transition-colors"
         >
           <ArrowRightLeft size={12} />
           {isSwitching ? 'Cancel' : activeTask ? 'Switch Task' : 'Link a Task'}
@@ -42,7 +42,7 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
 
       {/* Task Switcher Dropdown */}
       {isSwitching && (
-        <div className="space-y-2 p-3 rounded-lg bg-surface-850 border border-surface-700 animate-fade-in">
+        <div className="space-y-2 p-3 rounded-xl bg-surface-100 dark:bg-surface-850 border border-surface-300 dark:border-surface-700 animate-fade-in shadow-inner">
           <label className="label text-xs">Choose a task to work on:</label>
           <select
             value={activeTaskId || ''}
@@ -67,7 +67,7 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
         <div className="space-y-3">
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1 min-w-0">
-              <h3 className="text-base font-semibold text-surface-100 truncate">
+              <h3 className="text-base font-bold text-surface-900 dark:text-surface-100 truncate">
                 {activeTask.title}
               </h3>
               <div className="flex flex-wrap items-center gap-2">
@@ -84,10 +84,10 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
                     activeTask.priority === 'Urgent'
                       ? 'danger'
                       : activeTask.priority === 'High'
-                      ? 'warning'
+                      ? 'default'
                       : activeTask.priority === 'Low'
-                      ? 'muted'
-                      : 'default'
+                      ? 'success'
+                      : 'warning'
                   }
                   size="sm"
                 />
@@ -96,7 +96,7 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
 
             <button
               onClick={onUnlinkTask}
-              className="p-1 rounded-md text-surface-500 hover:text-surface-300 hover:bg-surface-700 transition-colors"
+              className="p-1.5 rounded-lg text-surface-400 hover:text-surface-600 dark:hover:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
               title="Unlink task"
               aria-label="Unlink task"
             >
@@ -106,21 +106,21 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
 
           {/* Progress Bar: Actual vs Estimated */}
           <div className="space-y-1.5 pt-1">
-            <div className="flex justify-between text-xs text-surface-400 font-medium">
-              <span className="flex items-center gap-1">
-                <Clock size={12} />
-                Spent: <strong className="text-surface-200">{formatMinutes(actual)}</strong>
+            <div className="flex justify-between text-xs text-surface-500 font-medium">
+              <span className="flex items-center gap-1 font-mono">
+                <Clock size={12} className="text-primary-500" />
+                Spent: <strong className="text-surface-900 dark:text-surface-200">{formatMinutes(actual)}</strong>
               </span>
-              <span>
+              <span className="font-mono">
                 Target:{' '}
-                <strong className="text-surface-200">
+                <strong className="text-surface-900 dark:text-surface-200">
                   {estimated > 0 ? formatMinutes(estimated) : 'No estimate'}
                 </strong>
               </span>
             </div>
 
             {estimated > 0 && (
-              <div className="w-full bg-surface-700 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-surface-200 dark:bg-surface-700 h-2.5 rounded-full overflow-hidden border border-surface-300/40 dark:border-surface-600/40">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
                     progress >= 100
@@ -136,10 +136,10 @@ export default function ActiveTaskCard({ activeTaskId, onSelectTask, onUnlinkTas
           </div>
         </div>
       ) : (
-        <div className="py-4 text-center text-surface-500 space-y-2">
-          <p className="text-sm">No task linked to this session.</p>
-          <p className="text-xs text-surface-600">
-            Linking a task will automatically log time to that task.
+        <div className="py-4 text-center text-surface-400 space-y-1.5">
+          <p className="text-sm font-medium text-surface-600 dark:text-surface-400">No task linked to this session.</p>
+          <p className="text-xs text-surface-400 dark:text-surface-500">
+            Linking a task will automatically log time and update its duration.
           </p>
         </div>
       )}

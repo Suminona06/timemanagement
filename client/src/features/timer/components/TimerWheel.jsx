@@ -1,5 +1,5 @@
 /**
- * TimerWheel — SVG Circular countdown and progress wheel.
+ * TimerWheel — SVG Circular countdown and progress wheel with ChronoCraft Lo-Fi branding.
  *
  * Props:
  *  displayTime     — Formatted time string (e.g. "24:59" or "01:23:45")
@@ -7,7 +7,7 @@
  *  mode            — 'pomodoro' | 'stopwatch'
  *  phase           — 'work' | 'shortBreak' | 'longBreak'
  *  status          — 'idle' | 'running' | 'paused'
- *  size            — Circle diameter in pixels (default: 280)
+ *  size            — Circle diameter in pixels (default: 290)
  */
 export default function TimerWheel({
   displayTime,
@@ -15,7 +15,7 @@ export default function TimerWheel({
   mode = 'pomodoro',
   phase = 'work',
   status = 'idle',
-  size = 280,
+  size = 290,
 }) {
   const strokeWidth = 10;
   const radius = (size - strokeWidth * 2) / 2;
@@ -30,17 +30,17 @@ export default function TimerWheel({
       ? 0
       : circumference;
 
-  // Phase & mode color accents
+  // Phase & mode color accents aligned with ChronoCraft Lo-Fi & Pastel System
   const getColor = () => {
-    if (mode === 'stopwatch') return '#F59E0B'; // Amber
+    if (mode === 'stopwatch') return '#D4A373'; // Amber Sand
     switch (phase) {
       case 'shortBreak':
-        return '#10B981'; // Emerald
+        return '#8DA780'; // Matcha Green
       case 'longBreak':
-        return '#8B5CF6'; // Purple
+        return '#B8B8D1'; // Muted Lavender
       case 'work':
       default:
-        return '#06B6D4'; // Cyan
+        return '#C88A58'; // Caramel Amber
     }
   };
 
@@ -61,6 +61,14 @@ export default function TimerWheel({
 
   return (
     <div className="relative flex items-center justify-center select-none" style={{ width: size, height: size }}>
+      {/* Background Soft Glow */}
+      {status === 'running' && (
+        <div
+          className="absolute inset-4 rounded-full filter blur-2xl opacity-20 pointer-events-none transition-all duration-500"
+          style={{ backgroundColor: ringColor }}
+        />
+      )}
+
       {/* SVG Circular Ring */}
       <svg width={size} height={size} className="transform -rotate-90">
         {/* Background Track */}
@@ -70,7 +78,7 @@ export default function TimerWheel({
           r={radius}
           stroke="currentColor"
           strokeWidth={strokeWidth}
-          className="text-surface-800"
+          className="text-surface-200 dark:text-surface-800"
           fill="transparent"
         />
 
@@ -89,7 +97,7 @@ export default function TimerWheel({
             status === 'running' && mode === 'stopwatch' ? 'animate-pulse' : ''
           }`}
           style={{
-            filter: status === 'running' ? `drop-shadow(0 0 8px ${ringColor}60)` : 'none',
+            filter: status === 'running' ? `drop-shadow(0 0 10px ${ringColor}80)` : 'none',
           }}
         />
       </svg>
@@ -98,9 +106,10 @@ export default function TimerWheel({
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         {/* Phase Pill */}
         <span
-          className="text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full mb-1 transition-colors"
+          className="text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full mb-1.5 transition-colors border"
           style={{
-            backgroundColor: `${ringColor}20`,
+            backgroundColor: `${ringColor}18`,
+            borderColor: `${ringColor}40`,
             color: ringColor,
           }}
         >
@@ -108,13 +117,22 @@ export default function TimerWheel({
         </span>
 
         {/* Digital Time Readout */}
-        <span className="font-mono text-4xl sm:text-5xl font-bold tracking-tight text-surface-100">
+        <span className="font-mono text-4xl sm:text-5xl font-bold tracking-tight text-surface-900 dark:text-surface-100 drop-shadow-sm">
           {displayTime}
         </span>
 
         {/* Status indicator */}
-        <span className="text-xs text-surface-500 font-medium mt-1 uppercase tracking-wider">
-          {status === 'running' ? '● Running' : status === 'paused' ? '❚❚ Paused' : 'Ready'}
+        <span className="text-[11px] text-surface-500 font-semibold mt-1.5 uppercase tracking-widest flex items-center gap-1.5">
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${
+              status === 'running'
+                ? 'bg-success-500 animate-ping'
+                : status === 'paused'
+                ? 'bg-warning-500'
+                : 'bg-surface-400'
+            }`}
+          />
+          {status === 'running' ? 'In Flow' : status === 'paused' ? 'Paused' : 'Ready'}
         </span>
       </div>
     </div>

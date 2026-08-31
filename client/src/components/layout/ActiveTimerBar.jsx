@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Play,
   Pause,
   Square,
   Timer,
-  Clock,
-  ChevronRight,
   Loader2,
   CheckCircle2,
 } from 'lucide-react';
@@ -15,24 +13,20 @@ import useTaskStore from '../../stores/taskStore';
 import { createTimeLog } from '../../services/timeLogService';
 
 /**
- * ActiveTimerBar — Top navigation bar ticker component.
+ * ActiveTimerBar — Top navigation bar ticker component with warm Lo-Fi styling.
  * Displays real-time timer status, active task title, category pill, and 1-click controls.
  */
 export default function ActiveTimerBar() {
-  const navigate = useNavigate();
   const {
     mode,
-    status,
     activeTaskId,
     displayTime,
     isRunning,
-    isPaused,
     isIdle,
     startTimer,
     pauseTimer,
     resumeTimer,
     completeSession,
-    resetTimer,
   } = useTimer();
 
   const { tasks, loadTasks } = useTaskStore();
@@ -78,22 +72,22 @@ export default function ActiveTimerBar() {
       <div className="flex items-center gap-2">
         <Link
           to="/timer"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-700/60 hover:bg-surface-700 text-surface-300 hover:text-surface-100 text-xs font-medium transition-colors border border-surface-600/50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-200/60 dark:bg-surface-700/60 hover:bg-surface-200 dark:hover:bg-surface-700 text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-surface-100 text-xs font-semibold transition-all border border-surface-300 dark:border-surface-600/50 shadow-warm-sm"
           title="Open Focus Room"
         >
-          <Timer size={14} className="text-primary-400" />
-          <span className="hidden sm:inline">Focus Timer</span>
+          <Timer size={14} className="text-primary-500" />
+          <span className="hidden sm:inline">Focus Room</span>
         </Link>
 
         {tasks.length > 0 && (
           <select
             onChange={(e) => e.target.value && handleQuickStart(e.target.value)}
             defaultValue=""
-            className="input py-1 text-xs w-auto max-w-[160px] hidden md:block bg-surface-800 border-surface-700 text-surface-400 cursor-pointer"
+            className="input py-1 px-2.5 text-xs w-auto max-w-[170px] hidden md:block bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700 text-surface-600 dark:text-surface-300 cursor-pointer rounded-xl shadow-warm-sm"
             aria-label="Quick start task timer"
           >
             <option value="" disabled>
-              ⚡ Quick Start Task...
+              ⚡ Quick Focus...
             </option>
             {tasks
               .filter((t) => t.status !== 'Completed')
@@ -110,11 +104,11 @@ export default function ActiveTimerBar() {
   }
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3 bg-surface-850 px-3 py-1.5 rounded-xl border border-primary-500/30 shadow-md animate-fade-in">
+    <div className="flex items-center gap-2 sm:gap-3 bg-surface-50 dark:bg-surface-850 px-3.5 py-1.5 rounded-2xl border border-primary-500/40 shadow-warm-sm animate-fade-in">
       {/* Ticking Digital Display & Link to /timer */}
       <Link
         to="/timer"
-        className="flex items-center gap-1.5 group cursor-pointer"
+        className="flex items-center gap-2 group cursor-pointer"
         title="Open Full Focus Room"
       >
         <span className="relative flex h-2.5 w-2.5">
@@ -127,16 +121,16 @@ export default function ActiveTimerBar() {
             }`}
           ></span>
         </span>
-        <span className="font-mono font-bold text-sm tracking-wider text-surface-100 group-hover:text-primary-400 transition-colors">
+        <span className="font-mono font-bold text-sm tracking-wider text-surface-900 dark:text-surface-100 group-hover:text-primary-500 transition-colors">
           {displayTime}
         </span>
-        <span className="text-[10px] uppercase font-semibold px-1 py-0.2 rounded bg-surface-700 text-surface-400 hidden sm:inline">
+        <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-md bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-300 hidden sm:inline">
           {mode}
         </span>
       </Link>
 
       {/* Task label */}
-      <div className="hidden lg:flex items-center gap-1.5 max-w-[180px] truncate border-l border-surface-700 pl-2">
+      <div className="hidden lg:flex items-center gap-1.5 max-w-[180px] truncate border-l border-surface-300 dark:border-surface-700 pl-2.5">
         {activeTask ? (
           <>
             {activeTask.categoryId?.color && (
@@ -145,12 +139,12 @@ export default function ActiveTimerBar() {
                 style={{ backgroundColor: activeTask.categoryId.color }}
               />
             )}
-            <span className="text-xs font-medium text-surface-200 truncate">
+            <span className="text-xs font-semibold text-surface-800 dark:text-surface-200 truncate">
               {activeTask.title}
             </span>
           </>
         ) : (
-          <span className="text-xs text-surface-500 italic">No task linked</span>
+          <span className="text-xs text-surface-400 italic">Free Session</span>
         )}
       </div>
 
@@ -159,7 +153,7 @@ export default function ActiveTimerBar() {
         {isRunning ? (
           <button
             onClick={pauseTimer}
-            className="p-1 rounded-md text-surface-300 hover:text-white hover:bg-surface-700 transition-colors"
+            className="p-1 rounded-lg text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
             title="Pause Timer"
             aria-label="Pause Timer"
           >
@@ -168,18 +162,18 @@ export default function ActiveTimerBar() {
         ) : (
           <button
             onClick={resumeTimer}
-            className="p-1 rounded-md text-primary-400 hover:text-primary-300 hover:bg-primary-500/10 transition-colors"
+            className="p-1 rounded-lg text-primary-600 dark:text-primary-400 hover:bg-primary-500/10 transition-colors"
             title="Resume Timer"
             aria-label="Resume Timer"
           >
-            <Play size={14} />
+            <Play size={14} fill="currentColor" />
           </button>
         )}
 
         <button
           onClick={handleStopAndSave}
           disabled={isSaving}
-          className="p-1 rounded-md text-danger-400 hover:text-danger-300 hover:bg-danger-500/10 transition-colors"
+          className="p-1 rounded-lg text-danger-500 hover:bg-danger-500/10 transition-colors"
           title="Stop & Save Session"
           aria-label="Stop and save session"
         >
@@ -191,7 +185,7 @@ export default function ActiveTimerBar() {
         </button>
 
         {saveSuccess && (
-          <span className="text-xs text-success-400 flex items-center gap-0.5 animate-fade-in pl-1">
+          <span className="text-xs text-success-500 font-semibold flex items-center gap-0.5 animate-fade-in pl-1">
             <CheckCircle2 size={12} /> Saved
           </span>
         )}
