@@ -1,9 +1,11 @@
 # Product Requirement Document (PRD): Personal Time Management Application
 
 **Project Name:** ChronoCraft (Personal Time Management Suite)  
+**Brand Identity:** Warm Lo-Fi & Mindful Time Crafting  
+**Logo Asset:** `client/public/logo.jpg` / `client/src/assets/logo.jpg`  
 **Target User:** Individual (Self-hosted / Personal Use)  
 **Tech Stack:** MERN Stack (MongoDB, Express.js, React.js, Node.js)  
-**Document Version:** 1.0.0  
+**Document Version:** 1.1.0  
 **Date:** August 2026  
 
 ---
@@ -11,31 +13,67 @@
 ## 1. Executive Summary & Product Vision
 
 ### 1.1 Overview
-The Personal Time Management Application is a unified, single-user focused web application designed to help individuals regain control over their time. By combining task management, live time tracking (stopwatch & Pomodoro), interactive time-blocking calendar views, and actionable productivity analytics, the application serves as a central hub for daily planning and reflection.
+ChronoCraft is a cozy, mindful, single-user time management web application designed to help individuals regain control and harmony over their daily time. Combining task management, live time tracking (Stopwatch & Pomodoro), time-blocking calendar views, and ambient Lo-Fi focus environments, ChronoCraft transforms daily productivity into a calming, intentional ritual.
 
-### 1.2 Vision Statement
-To provide a distraction-free, customizable, and high-performance time management experience tailored to personal productivity workflows without unnecessary complexity or enterprise clutter.
+### 1.2 Design Philosophy: Authentic Warm Lo-Fi (Anti "AI-Slop")
+- **No Generic "AI-Slop" Aesthetics:** Strictly avoiding cliché corporate neon gradients, over-saturated purple-blue templates, and cluttered robotic dashboards.
+- **Warm Coffee & Pastel Harmony:** Visuals directly inspired by the official **ChronoCraft logo** (vintage clock enclosed in an organic 'C' with cozy botanical leaf accents, warm espresso typography, and caramel amber tones).
+- **Mindful & Tactile UX:** Generous whitespace, soft pastel badges, cozy rounded containers (`rounded-2xl`/`rounded-3xl`), subtle warm paper/linen textures, and smooth tactile micro-interactions.
 
 ### 1.3 Key Objectives
-- **Centralize Planning:** Consolidate task lists, project categories, and daily schedules into one cohesive interface.
+- **Centralize Planning:** Consolidate task lists, project categories, and daily schedules into a calming, distraction-free interface.
 - **Accurate Time Tracking:** Track actual time spent on activities seamlessly using live timers or manual entry.
 - **Visualize Productivity:** Deliver clear analytics comparing planned time vs. actual execution to identify time sinks and improve estimation accuracy.
-- **Focus Enhancement:** Integrate structured Pomodoro sessions to maintain deep focus and prevent burnout.
+- **Deep Focus & Mindfulness:** Integrate structured Pomodoro sessions, ambient Lo-Fi music, and soothing soundscapes to prevent burnout.
 
 ---
 
-## 2. Target Audience & User Persona
+## 2. Brand Identity & Visual Design System
 
-- **Primary User:** Software developer / Professional building a self-hosted time management tool for personal use.
-- **Core Needs:**
-  - Fast, keyboard-friendly UI/UX with modern aesthetics (Dark Mode).
-  - Flexible task tagging and category color-coding.
-  - Seamless tracking between different projects and learning routines.
-  - Privacy and full ownership of time-tracking data.
+### 2.1 Logo & Brand Assets
+- **Logo Motif:** The official ChronoCraft emblem features a warm vintage analog clock enveloped within a coffee-brown letter "C", adorned with botanical leaves and warm sparkle highlights.
+- **Application Placement:**
+  - **App Header & TopNav:** Compact logo mark alongside elegant ChronoCraft wordmark.
+  - **Auth Screens (Login / Register):** Prominent centered ChronoCraft emblem with warm welcoming typography.
+  - **Favicon & Browser Tab:** Stylized clock-and-leaf emblem.
+  - **Focus Room (`/timer`):** Ambient minimal watermark emblem.
+
+### 2.2 Color Palette: Warm Coffee & Cozy Pastels
+```
++-----------------------------------------------------------------------------------------+
+|                                CHRONOCRAFT LO-FI PALETTE                                |
++-----------------------+-----------------------+-----------------------+-----------------+
+| Brand Primary:        | Light Mode Base:      | Dark Mode Base:       | Pastel Accents: |
+| Caramel Amber #C88A58 | Warm Latte   #FAF7F2  | Cozy Espresso #1C1917 | Matcha  #8DA780 |
+| Espresso      #3D2314 | Cream Card   #FFFFFF  | Warm Stone    #292524 | Peach   #E8B4B8 |
+| Amber Sand    #D4A373 | Soft Linen   #F4EBE1  | Charcoal Muted#44403C | Chai    #E9D8A6 |
+| Deep Roast    #4A2E1B | Warm Border  #E8DFD8  | Dark Border   #3D3835 | Lavndr  #B8B8D1 |
++-----------------------+-----------------------+-----------------------+-----------------+
+```
+
+- **Light Mode (Warm Café & Latte):**
+  - Background Canvas: `#FAF7F2` (Warm Milk Foam / Linen)
+  - Card & Surface: `#FFFFFF` and `#F7F2EC`
+  - Text Primary: `#2D1E12` (Deep Roasted Coffee)
+  - Text Secondary: `#786B61` (Warm Muted Umber)
+  - Borders: `#E8DFD8`
+- **Dark Mode (Cozy Midnight Study Room):**
+  - Background Canvas: `#191614` (Deep Espresso Charcoal)
+  - Card & Surface: `#25201D` and `#2E2724`
+  - Text Primary: `#F5EFEB` (Warm Cream White)
+  - Text Secondary: `#A89F97` (Muted Warm Sand)
+  - Borders: `#3D3530`
+- **Pastel Tag & Category Colors:**
+  - *Matcha Green (`#8DA780` / `#D8E2DC`)*: Health, Habit, Completed
+  - *Dusty Peach (`#E8B4B8` / `#F8EDEB`)*: Urgent, High Priority
+  - *Warm Chai (`#E9D8A6` / `#FAEDCD`)*: In Progress, Medium Priority
+  - *Muted Lavender (`#B8B8D1` / `#E8E8F4`)*: Deep Learning, Creative
+  - *Soft Sky Blue (`#A2D2FF` / `#EDF6F9`)*: Work, Planning
 
 ---
 
 ## 3. Technology Stack & System Architecture
+
 
 ### 3.1 Technology Stack
 | Layer | Tech / Library | Purpose |
@@ -220,22 +258,26 @@ To provide a distraction-free, customizable, and high-performance time managemen
 
 ---
 
-## 7. UI/UX Wireframe Concepts & Key Screens
+## 7. UI/UX Wireframe Concepts & Key Screens (Lo-Fi Pastel Theme)
 
-1. **Dashboard & Active Timer Bar:** Top navigation with quick-start timer, daily goal progress ring, and task quick-add input.
-2. **Task Hub (Kanban / List):** Tabbed switching between Kanban columns and detail list view with quick category color badges.
-3. **Focus Room (Timer Page):** Large minimal Pomodoro counter with ambient visual feedback and current active task focus card.
-4. **Time Blocking Calendar:** Hourly time grid allowing task placement and visual comparison between planned time slots vs actual log overlays.
-5. **Analytics Dashboard:** Clean charts powered by Recharts with date range selectors (Today, This Week, This Month).
+1. **TopNav & Active Timer Bar:** Elegant coffee-toned top navigation featuring the ChronoCraft logo mark, quick-start task selector, ticking vintage-styled digital timer, and soft audio mute/unmute buttons.
+2. **Dashboard & Executive Hub:** Warm cream/espresso card layout with daily goal progress ring, cozy "Today's Schedule" timeline, quick-add task card, and pastel-tagged recent tasks.
+3. **Task Hub (Kanban / List View):** Smooth switching between tactile Kanban columns and minimal list view. Each card is softly rounded (`rounded-2xl`) with muted pastel badges (Matcha, Peach, Chai, Lavender, Sky Blue) rather than harsh saturated alert tags.
+4. **Focus Room (`/timer`):** Immersive, distraction-free study space with a large circular timer countdown, ambient watermark of the ChronoCraft logo, Pomodoro cycle tabs, and the integrated Lo-Fi Ambient & YouTube/Spotify soundscapes widget.
+5. **Time Blocking Calendar:** Calming pastel hourly time grid (00:00 - 23:00) comparing scheduled tasks with completed time blocks seamlessly.
+6. **Analytics Dashboard:** Beautifully styled Recharts graphs using the warm caramel, matcha, peach, and chai color palette for time allocation and daily focus trends.
+7. **Settings & Sound Customizer:** Clean settings panel to configure work/break durations, select custom alarm tones, upload sound files, or enter YouTube/Spotify Lo-Fi streams.
 
 ---
 
-## 8. Non-Functional Requirements
+## 8. Non-Functional & Aesthetic Requirements
 
-- **Performance:** Page load under 1.5 seconds; instant timer controls with zero drift latency.
-- **Security:** Password hashing using bcrypt salt factor >= 10; sanitized DB queries protecting against NOSQL injection.
-- **Data Integrity:** Cascading handling when categories are removed (preserve logs with unassigned category or block deletion).
-- **Usability:** Responsive layout optimized for desktop view with mobile web accessibility for checking tasks on the go.
+- **Anti "AI-Slop" Quality Standard:** Thoughtful layout hierarchy, intentional typography pairings (Inter / Plus Jakarta Sans / Serif headings), balanced whitespace, and authentic warm color theory.
+- **Performance:** Sub-1.5s initial load time; instant zero-lag timer ticks with zero drift.
+- **Security:** Bcrypt password hashing (salt >= 10), JWT Bearer auth, sanitized MongoDB queries.
+- **Data Integrity & Privacy:** Full local data ownership and isolated user collections.
+- **Responsive & Accessible:** Fluid scaling from desktop to mobile screens with high-contrast text against soft pastel backgrounds (WCAG AA compliant).
+
 
 ---
 

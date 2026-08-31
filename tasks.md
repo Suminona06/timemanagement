@@ -84,16 +84,20 @@ graph TD
     5. Implement custom error middleware in `server/src/middleware/errorHandler.js` handling `CastError`, `ValidationError`, duplicate key errors (`code: 11000`), and standard 500 errors.
   - **Acceptance Criteria:** Server starts cleanly on port 5000; `GET /api/health` returns `200 OK`; MongoDB connects successfully.
 
-- [x] **Task 1.3: Client Initialization (React + Vite + Tailwind CSS)**
-  - **Objective:** Scaffold the frontend SPA using Vite, React 18, Tailwind CSS, Lucide icons, and React Router.
-  - **Target Files:** `client/package.json`, `client/vite.config.js`, `client/tailwind.config.js`, `client/src/index.css`, `client/src/main.jsx`, `client/src/App.jsx`, `client/src/services/api.js`
+- [x] **Task 1.3: Client Initialization & Lo-Fi Pastel Tailwind Configuration**
+  - **Objective:** Scaffold the frontend SPA using Vite, React, Tailwind CSS, Lucide icons, and embed the ChronoCraft logo.
+  - **Target Files:** `client/package.json`, `client/vite.config.js`, `client/tailwind.config.js`, `client/src/index.css`, `client/src/main.jsx`, `client/src/App.jsx`, `client/public/logo.jpg`, `client/src/assets/logo.jpg`
   - **Detailed Steps:**
-    1. Initialize `client` using Vite React template.
+    1. Initialize `client` with Vite React template.
     2. Install dependencies: `react-router-dom`, `lucide-react`, `zustand`, `clsx`, `tailwind-merge`, `date-fns`, `recharts`, `axios`, `@hello-pangea/dnd`.
-    3. Configure `tailwind.config.js` with `darkMode: 'class'` and custom color schemes (slate/zinc dark palette with primary accent `#3B82F6`).
-    4. Configure `client/src/services/api.js` creating an Axios instance with `baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'`.
-    5. Setup basic App router in `client/src/App.jsx` with placeholder routes.
-  - **Acceptance Criteria:** `npm run dev:client` boots Vite dev server at `http://localhost:5173`; Tailwind classes render properly.
+    3. Configure `tailwind.config.js` with `darkMode: 'class'` and custom **ChronoCraft Warm Lo-Fi Pastel Theme**:
+       - *Espresso & Coffee:* `#191614`, `#25201D`, `#2E2724`, `#3D2314`, `#4A2E1B`
+       - *Caramel Amber (Primary):* `#C88A58`, `#D4A373`, `#93582A`
+       - *Latte & Linen Base:* `#FAF7F2`, `#F4EBE1`, `#E8DFD8`
+       - *Pastels:* Matcha (`#8DA780`), Peach (`#E8B4B8`), Chai (`#E9D8A6`), Lavender (`#B8B8D1`), Sky (`#A2D2FF`)
+    4. Copy ChronoCraft emblem to `client/public/logo.jpg` and `client/src/assets/logo.jpg`.
+    5. Configure `client/src/services/api.js` creating an Axios instance with `baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'`.
+  - **Acceptance Criteria:** `npm run dev:client` runs Vite dev server; custom lofi pastel colors and logo asset are accessible.
 
 ---
 
@@ -127,14 +131,15 @@ graph TD
     3. Update `client/src/services/api.js` with Axios request/response interceptors for Bearer token attachment and automatic 401 logout handling.
   - **Acceptance Criteria:** Token persists across page reloads in `localStorage`; state reflects auth status accurately.
 
-- [x] **Task 2.4: Auth UI Views & Protected Route Wrappers**
-  - **Objective:** Build responsive Login and Register pages and navigation guards.
-  - **Target Files:** `client/src/features/auth/LoginView.jsx`, `client/src/features/auth/RegisterView.jsx`, `client/src/features/auth/ProtectedRoute.jsx`, `client/src/components/layout/AppShell.jsx`
+- [x] **Task 2.4: Auth UI Views & Protected AppShell with ChronoCraft Logo**
+  - **Objective:** Build cozy Lo-Fi styled Login and Register views with ChronoCraft branding and responsive AppShell navigation.
+  - **Target Files:** `client/src/features/auth/LoginView.jsx`, `client/src/features/auth/RegisterView.jsx`, `client/src/features/auth/ProtectedRoute.jsx`, `client/src/components/layout/AppShell.jsx`, `client/src/components/layout/Sidebar.jsx`
   - **Detailed Steps:**
-    1. Create dark-themed `LoginView.jsx` and `RegisterView.jsx` with input validation and error alerts.
-    2. Build `ProtectedRoute.jsx` redirecting unauthenticated users to `/login` and rendering `<Outlet />` inside `AppShell`.
-    3. Implement `AppShell.jsx` featuring responsive Sidebar navigation, Top Navigation bar, and Main content view.
-  - **Acceptance Criteria:** Protected routes guard unauthorized access; successful auth redirects to `/dashboard`.
+    1. In `LoginView.jsx` and `RegisterView.jsx`, feature the centered ChronoCraft logo emblem, warm latte/espresso card backgrounds, cozy rounded inputs (`rounded-xl`), and caramel CTA buttons.
+    2. Build `ProtectedRoute.jsx` redirecting unauthenticated users to `/login`.
+    3. In `AppShell.jsx` and `Sidebar.jsx`, render the compact ChronoCraft logo alongside navigation tabs (Dashboard, Tasks, Focus Timer, Calendar, Analytics, Settings) with soft pastel hover states.
+  - **Acceptance Criteria:** Auth views reflect warm ChronoCraft branding; navigation operates smoothly with protected routes.
+
 
 ---
 
