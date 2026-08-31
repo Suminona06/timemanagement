@@ -17,6 +17,7 @@ import SoundSettingsSection from './components/SoundSettingsSection';
 
 /**
  * SettingsView — User preferences and configuration for timers, themes, audio, and profile.
+ * Supports bright warm Lo-Fi light mode and cozy dark espresso theme.
  */
 export default function SettingsView() {
   const { user, updatePreferences, updateProfile, isLoading } = useAuthStore();
@@ -131,25 +132,25 @@ export default function SettingsView() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto pb-12 animate-fade-in">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="border-b border-surface-800 pb-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-surface-100 flex items-center gap-2">
-          <Settings size={24} className="text-primary-400" />
+      <div className="border-b border-surface-300 dark:border-surface-700/80 pb-4">
+        <h1 className="text-xl sm:text-2xl font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+          <Settings size={24} className="text-primary-500" />
           Settings & Preferences
         </h1>
-        <p className="text-xs sm:text-sm text-surface-400 mt-0.5">
-          Customize your Pomodoro timers, daily focus goals, notification sounds, and theme.
+        <p className="text-xs sm:text-sm text-surface-500 mt-0.5">
+          Customize your Pomodoro timers, daily focus goals, notification sounds, and aesthetic theme.
         </p>
       </div>
 
       {/* ── Success / Error Banners ──────────────────────────────────────── */}
       {feedbackMsg && (
-        <div className="p-3.5 rounded-xl bg-success-500/10 border border-success-500/30 text-success-400 text-sm flex items-center gap-2 animate-fade-in">
+        <div className="p-3.5 rounded-2xl bg-success-500/10 border border-success-500/30 text-success-600 dark:text-success-400 text-sm font-medium flex items-center gap-2 animate-fade-in shadow-warm-sm">
           <CheckCircle2 size={16} />
           {feedbackMsg}
         </div>
       )}
       {errorMsg && (
-        <div className="p-3.5 rounded-xl bg-danger-500/10 border border-danger-500/30 text-danger-400 text-sm animate-fade-in">
+        <div className="p-3.5 rounded-2xl bg-danger-500/10 border border-danger-500/30 text-danger-600 dark:text-danger-400 text-sm font-medium animate-fade-in shadow-warm-sm">
           {errorMsg}
         </div>
       )}
@@ -157,9 +158,9 @@ export default function SettingsView() {
       <form onSubmit={handleSubmit} className="space-y-6">
 
         {/* ── Section 1: Profile ────────────────────────────────────────── */}
-        <div className="card p-5 bg-surface-800 border-surface-700 space-y-4">
-          <h2 className="text-sm font-semibold text-surface-100 flex items-center gap-2 pb-2 border-b border-surface-700/60">
-            <User size={16} className="text-primary-400" />
+        <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-4">
+          <h2 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2 pb-3 border-b border-surface-200 dark:border-surface-700/60">
+            <User size={16} className="text-primary-500" />
             Profile Information
           </h2>
 
@@ -181,23 +182,23 @@ export default function SettingsView() {
                 type="email"
                 value={user?.email || ''}
                 disabled
-                className="input bg-surface-900/50 text-surface-500 cursor-not-allowed border-surface-800"
+                className="input bg-surface-200/60 dark:bg-surface-900/50 text-surface-500 dark:text-surface-400 cursor-not-allowed border-surface-300 dark:border-surface-800"
               />
             </div>
           </div>
         </div>
 
         {/* ── Section 2: Timer & Focus Durations ───────────────────────── */}
-        <div className="card p-5 bg-surface-800 border-surface-700 space-y-5">
-          <h2 className="text-sm font-semibold text-surface-100 flex items-center gap-2 pb-2 border-b border-surface-700/60">
-            <Clock size={16} className="text-primary-400" />
+        <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-5">
+          <h2 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2 pb-3 border-b border-surface-200 dark:border-surface-700/60">
+            <Clock size={16} className="text-primary-500" />
             Timer & Focus Durations
           </h2>
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <label className="label mb-0">Daily Focus Goal (Hours)</label>
-              <span className="text-xs font-mono font-bold text-primary-400 bg-primary-500/10 px-2 py-0.5 rounded border border-primary-500/20">
+              <span className="text-xs font-mono font-bold text-primary-700 dark:text-primary-300 bg-primary-500/15 px-2.5 py-0.5 rounded-lg border border-primary-500/30">
                 {dailyGoalHours} hrs / day
               </span>
             </div>
@@ -207,7 +208,7 @@ export default function SettingsView() {
               onChange={(e) => setDailyGoalHours(Number(e.target.value))}
               className="w-full accent-primary-500 cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] text-surface-500">
+            <div className="flex justify-between text-[11px] text-surface-500 font-medium">
               <span>1 hr</span><span>8 hrs (Recommended)</span><span>16 hrs</span>
             </div>
           </div>
@@ -217,19 +218,19 @@ export default function SettingsView() {
               <label className="label">Focus Work (minutes)</label>
               <input type="number" min="1" max="120" value={pomodoroWorkMinutes}
                 onChange={(e) => setPomodoroWorkMinutes(Number(e.target.value))} className="input" required />
-              <p className="text-[10px] text-surface-500 mt-1">Default: 25 min</p>
+              <p className="text-[10px] text-surface-500 mt-1">Standard: 25 min</p>
             </div>
             <div>
               <label className="label">Short Break (minutes)</label>
               <input type="number" min="1" max="30" value={pomodoroShortBreakMinutes}
                 onChange={(e) => setPomodoroShortBreakMinutes(Number(e.target.value))} className="input" required />
-              <p className="text-[10px] text-surface-500 mt-1">Default: 5 min</p>
+              <p className="text-[10px] text-surface-500 mt-1">Standard: 5 min</p>
             </div>
             <div>
               <label className="label">Long Break (minutes)</label>
               <input type="number" min="1" max="60" value={pomodoroLongBreakMinutes}
                 onChange={(e) => setPomodoroLongBreakMinutes(Number(e.target.value))} className="input" required />
-              <p className="text-[10px] text-surface-500 mt-1">Default: 15 min</p>
+              <p className="text-[10px] text-surface-500 mt-1">Standard: 15 min</p>
             </div>
           </div>
 
@@ -238,40 +239,44 @@ export default function SettingsView() {
             <input type="number" min="2" max="10" value={longBreakInterval}
               onChange={(e) => setLongBreakInterval(Number(e.target.value))} className="input" required />
             <p className="text-[10px] text-surface-500 mt-1">
-              Trigger long break every {longBreakInterval} work sessions.
+              Trigger long break every {longBreakInterval} completed work sessions.
             </p>
           </div>
         </div>
 
         {/* ── Section 3: Appearance ─────────────────────────────────────── */}
-        <div className="card p-5 bg-surface-800 border-surface-700 space-y-4">
-          <h2 className="text-sm font-semibold text-surface-100 flex items-center gap-2 pb-2 border-b border-surface-700/60">
-            <Palette size={16} className="text-primary-400" />
-            Appearance
+        <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-4">
+          <h2 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2 pb-3 border-b border-surface-200 dark:border-surface-700/60">
+            <Palette size={16} className="text-primary-500" />
+            Appearance & Theme
           </h2>
           <div className="space-y-2">
             <label className="label">Theme Mode</label>
             <div className="grid grid-cols-2 gap-3 max-w-xs">
-              <button type="button" onClick={() => handleThemeChange('dark')}
-                className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${
-                  theme === 'dark' ? 'bg-primary-500/15 border-primary-500 text-primary-300' : 'bg-surface-850 border-surface-700 text-surface-400 hover:text-surface-200'
-                }`}>
-                <Moon size={15} /> Dark Theme
-              </button>
               <button type="button" onClick={() => handleThemeChange('light')}
-                className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${
-                  theme === 'light' ? 'bg-primary-500/15 border-primary-500 text-primary-300' : 'bg-surface-850 border-surface-700 text-surface-400 hover:text-surface-200'
+                className={`flex items-center justify-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all shadow-warm-sm ${
+                  theme === 'light'
+                    ? 'bg-primary-500 text-white border-primary-500 shadow-md'
+                    : 'bg-surface-100 dark:bg-surface-850 border-surface-300 dark:border-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-700'
                 }`}>
                 <Sun size={15} /> Light Theme
+              </button>
+              <button type="button" onClick={() => handleThemeChange('dark')}
+                className={`flex items-center justify-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all shadow-warm-sm ${
+                  theme === 'dark'
+                    ? 'bg-primary-500 text-white border-primary-500 shadow-md'
+                    : 'bg-surface-100 dark:bg-surface-850 border-surface-300 dark:border-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-200 dark:hover:bg-surface-700'
+                }`}>
+                <Moon size={15} /> Dark Theme
               </button>
             </div>
           </div>
         </div>
 
         {/* ── Section 4: Sound & Ringtone Customizer ───────────────────── */}
-        <div className="card p-5 bg-surface-800 border-surface-700 space-y-5">
-          <h2 className="text-sm font-semibold text-surface-100 flex items-center gap-2 pb-2 border-b border-surface-700/60">
-            <Music size={16} className="text-primary-400" />
+        <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-5">
+          <h2 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2 pb-3 border-b border-surface-200 dark:border-surface-700/60">
+            <Music size={16} className="text-primary-500" />
             Sound & Ringtone Customizer
           </h2>
           <SoundSettingsSection
@@ -287,11 +292,11 @@ export default function SettingsView() {
         {/* ── Action Buttons ────────────────────────────────────────────── */}
         <div className="flex items-center justify-between pt-2">
           <button type="button" onClick={handleResetDefaults}
-            className="btn-ghost text-xs py-2 px-3 gap-1.5">
+            className="btn-ghost text-xs py-2.5 px-3.5 gap-1.5 rounded-xl shadow-warm-sm">
             <RotateCcw size={14} /> Reset to Defaults
           </button>
           <button type="submit" disabled={isSaving || isLoading}
-            className="btn-primary py-2.5 px-5 gap-2 text-sm shadow-lg shadow-primary-500/20">
+            className="btn-primary py-2.5 px-6 gap-2 text-sm shadow-warm-md">
             {isSaving
               ? <><Loader2 size={16} className="animate-spin" /> Saving Changes…</>
               : <><Save size={16} /> Save Settings</>

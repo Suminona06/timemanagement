@@ -58,7 +58,7 @@ function ToneSelector({ label, value, onChange, customSounds }) {
 }
 
 /**
- * SoundSettingsSection — Full-featured ringtone customizer panel.
+ * SoundSettingsSection — Full-featured ringtone customizer panel with warm Lo-Fi light and dark mode.
  *
  * Props:
  *   soundEnabled    — master toggle value
@@ -150,7 +150,6 @@ export default function SoundSettingsSection({
       playPresetTone(workAlarmTone || 'zen_bell', vol);
     }
     setPreviewingWork(true);
-    // Auto-clear after ~2s for preset tones
     if (!workAlarmTone?.startsWith('custom:')) {
       setTimeout(() => setPreviewingWork(false), 2200);
     }
@@ -193,7 +192,7 @@ export default function SoundSettingsSection({
   const handleFileInput = (e) => {
     const file = e.target.files?.[0];
     if (file) handleFileUpload(file);
-    e.target.value = ''; // Reset input for re-upload of same file
+    e.target.value = '';
   };
 
   const handleDrop = (e) => {
@@ -206,30 +205,30 @@ export default function SoundSettingsSection({
   return (
     <div className="space-y-5">
       {/* ── Master Sound Toggle ─────────────────────────────────────────── */}
-      <div className="flex items-center justify-between p-3.5 rounded-xl border border-surface-700 bg-surface-850">
+      <div className="flex items-center justify-between p-4 rounded-2xl border border-surface-300 dark:border-surface-700 bg-surface-100 dark:bg-surface-850 shadow-warm-sm">
         <div className="flex items-center gap-3">
           {soundEnabled
-            ? <Volume2 size={18} className="text-success-400" />
-            : <VolumeX size={18} className="text-surface-500" />
+            ? <Volume2 size={20} className="text-pastel-matcha-dark dark:text-pastel-matcha" />
+            : <VolumeX size={20} className="text-surface-400" />
           }
           <div>
-            <p className="text-sm font-medium text-surface-200">Sound Alerts</p>
+            <p className="text-sm font-semibold text-surface-900 dark:text-surface-100">Sound Alerts</p>
             <p className="text-xs text-surface-500">
-              {soundEnabled ? 'Alarm chimes are active' : 'All audio alerts are muted'}
+              {soundEnabled ? 'Alarm chimes & audio effects are active' : 'All audio alerts are muted'}
             </p>
           </div>
         </div>
         <button
           type="button"
           onClick={() => onChange({ soundEnabled: !soundEnabled })}
-          className={`relative w-11 h-6 rounded-full transition-colors duration-200 focus:outline-none ${
-            soundEnabled ? 'bg-success-500' : 'bg-surface-600'
+          className={`relative w-12 h-6 rounded-full transition-colors duration-200 focus:outline-none ${
+            soundEnabled ? 'bg-pastel-matcha-dark dark:bg-pastel-matcha' : 'bg-surface-300 dark:bg-surface-600'
           }`}
           role="switch"
           aria-checked={soundEnabled}
         >
           <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 ${
-            soundEnabled ? 'translate-x-5' : 'translate-x-0'
+            soundEnabled ? 'translate-x-6' : 'translate-x-0'
           }`} />
         </button>
       </div>
@@ -238,7 +237,7 @@ export default function SoundSettingsSection({
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <label className="label mb-0">Alarm Volume</label>
-          <span className="text-xs font-mono font-bold text-primary-400 bg-primary-500/10 px-2 py-0.5 rounded border border-primary-500/20">
+          <span className="text-xs font-mono font-bold text-primary-700 dark:text-primary-300 bg-primary-500/15 px-2.5 py-0.5 rounded-lg border border-primary-500/30">
             {alarmVolume ?? 80}%
           </span>
         </div>
@@ -252,7 +251,7 @@ export default function SoundSettingsSection({
           disabled={!soundEnabled}
           className="w-full accent-primary-500 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
         />
-        <div className="flex justify-between text-[11px] text-surface-500">
+        <div className="flex justify-between text-[11px] text-surface-500 font-medium">
           <span>0% (Mute)</span>
           <span>50%</span>
           <span>100% (Max)</span>
@@ -275,15 +274,15 @@ export default function SoundSettingsSection({
               type="button"
               onClick={handlePreviewWork}
               title={previewingWork ? 'Stop preview' : 'Preview tone'}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all shadow-warm-sm ${
                 previewingWork
-                  ? 'bg-danger-500/10 border-danger-500/40 text-danger-400'
-                  : 'bg-primary-500/10 border-primary-500/30 text-primary-400 hover:bg-primary-500/20'
+                  ? 'bg-danger-500/10 border-danger-500/40 text-danger-500'
+                  : 'bg-primary-500/15 border-primary-500/30 text-primary-700 dark:text-primary-300 hover:bg-primary-500/25'
               }`}
             >
               {previewingWork
                 ? <><Square size={13} /> Stop</>
-                : <><Play  size={13} /> Play</>
+                : <><Play  size={13} fill="currentColor" /> Play</>
               }
             </button>
           </div>
@@ -306,15 +305,15 @@ export default function SoundSettingsSection({
               type="button"
               onClick={handlePreviewBreak}
               title={previewingBreak ? 'Stop preview' : 'Preview tone'}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold border transition-all shadow-warm-sm ${
                 previewingBreak
-                  ? 'bg-danger-500/10 border-danger-500/40 text-danger-400'
-                  : 'bg-primary-500/10 border-primary-500/30 text-primary-400 hover:bg-primary-500/20'
+                  ? 'bg-danger-500/10 border-danger-500/40 text-danger-500'
+                  : 'bg-pastel-matcha-light/40 dark:bg-pastel-matcha/20 border-pastel-matcha/40 text-pastel-matcha-dark dark:text-pastel-matcha hover:bg-pastel-matcha-light/60'
               }`}
             >
               {previewingBreak
                 ? <><Square size={13} /> Stop</>
-                : <><Play  size={13} /> Play</>
+                : <><Play  size={13} fill="currentColor" /> Play</>
               }
             </button>
           </div>
@@ -322,10 +321,10 @@ export default function SoundSettingsSection({
       </div>
 
       {/* ── Custom Sound Upload Drop-Zone ────────────────────────────────── */}
-      <div className="space-y-3 pt-2 border-t border-surface-700/50">
+      <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-700/60">
         <div className="flex items-center gap-2">
-          <Music size={15} className="text-primary-400" />
-          <h3 className="text-xs font-semibold text-surface-200 uppercase tracking-wider">
+          <Music size={15} className="text-primary-500" />
+          <h3 className="text-xs font-bold text-surface-900 dark:text-surface-200 uppercase tracking-wider">
             My Custom Ringtones
           </h3>
           {isLoading && <Loader2 size={13} className="animate-spin text-surface-500" />}
@@ -333,7 +332,7 @@ export default function SoundSettingsSection({
 
         {/* Upload error */}
         {uploadError && (
-          <div className="flex items-start gap-2 p-2.5 rounded-lg bg-danger-500/10 border border-danger-500/30 text-danger-400 text-xs">
+          <div className="flex items-start gap-2 p-3 rounded-xl bg-danger-500/10 border border-danger-500/30 text-danger-500 text-xs font-medium">
             <AlertCircle size={14} className="shrink-0 mt-0.5" />
             <span>{uploadError}</span>
           </div>
@@ -341,7 +340,7 @@ export default function SoundSettingsSection({
 
         {/* Upload success */}
         {uploadSuccess && (
-          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-success-500/10 border border-success-500/30 text-success-400 text-xs animate-fade-in">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-success-500/10 border border-success-500/30 text-success-600 dark:text-success-400 text-xs font-medium animate-fade-in shadow-warm-sm">
             <CheckCircle2 size={14} />
             {uploadSuccess}
           </div>
@@ -353,22 +352,22 @@ export default function SoundSettingsSection({
           onDragLeave={() => setIsDragOver(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`relative flex flex-col items-center justify-center gap-2 p-5 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+          className={`relative flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
             isDragOver
-              ? 'border-primary-400 bg-primary-500/10 scale-[1.01]'
-              : 'border-surface-600 hover:border-primary-500/50 hover:bg-surface-800 bg-surface-850'
+              ? 'border-primary-500 bg-primary-500/15 scale-[1.01]'
+              : 'border-surface-300 dark:border-surface-600 hover:border-primary-500/60 hover:bg-surface-100 dark:hover:bg-surface-750 bg-surface-50 dark:bg-surface-850 shadow-warm-sm'
           }`}
         >
           {isUploading ? (
-            <Loader2 size={22} className="animate-spin text-primary-400" />
+            <Loader2 size={24} className="animate-spin text-primary-500" />
           ) : (
-            <Upload size={20} className={isDragOver ? 'text-primary-400' : 'text-surface-500'} />
+            <Upload size={22} className={isDragOver ? 'text-primary-500' : 'text-surface-400 dark:text-surface-500'} />
           )}
           <div className="text-center">
-            <p className="text-xs font-medium text-surface-300">
-              {isUploading ? 'Storing audio file...' : 'Drop audio file here or click to browse'}
+            <p className="text-xs font-semibold text-surface-800 dark:text-surface-200">
+              {isUploading ? 'Storing audio file in local browser…' : 'Drop audio file here or click to browse'}
             </p>
-            <p className="text-[10px] text-surface-500 mt-0.5">
+            <p className="text-[10px] text-surface-500 mt-0.5 font-mono">
               mp3, wav, ogg, m4a, aac, flac · Max 10 MB
             </p>
           </div>
@@ -387,13 +386,13 @@ export default function SoundSettingsSection({
             {customSounds.map((sound) => (
               <div
                 key={sound.id}
-                className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 group"
+                className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-surface-100 dark:bg-surface-850 border border-surface-300 dark:border-surface-700 shadow-warm-sm group"
               >
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Music size={14} className="text-primary-400 shrink-0" />
+                  <Music size={14} className="text-primary-500 shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-xs font-medium text-surface-200 truncate">{sound.name}</p>
-                    <p className="text-[10px] text-surface-500">
+                    <p className="text-xs font-semibold text-surface-800 dark:text-surface-200 truncate">{sound.name}</p>
+                    <p className="text-[10px] text-surface-500 font-mono">
                       {formatBytes(sound.size)} · {new Date(sound.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -411,21 +410,21 @@ export default function SoundSettingsSection({
                     }}
                     className={`p-1.5 rounded-lg transition-colors ${
                       previewingId === sound.id
-                        ? 'text-danger-400 bg-danger-500/10'
-                        : 'text-surface-400 hover:text-primary-400 hover:bg-primary-500/10'
+                        ? 'text-danger-500 bg-danger-500/10'
+                        : 'text-surface-500 hover:text-primary-500 hover:bg-primary-500/10'
                     }`}
                     title={previewingId === sound.id ? 'Stop preview' : 'Preview sound'}
                   >
                     {previewingId === sound.id
                       ? <Square size={13} />
-                      : <Play  size={13} />
+                      : <Play  size={13} fill="currentColor" />
                     }
                   </button>
                   {/* Delete button */}
                   <button
                     type="button"
                     onClick={() => removeSound(sound.id)}
-                    className="p-1.5 rounded-lg text-surface-500 hover:text-danger-400 hover:bg-danger-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                    className="p-1.5 rounded-lg text-surface-400 hover:text-danger-500 hover:bg-danger-500/10 transition-colors opacity-0 group-hover:opacity-100"
                     title="Delete custom sound"
                   >
                     <Trash2 size={13} />
@@ -437,15 +436,15 @@ export default function SoundSettingsSection({
         ) : (
           !isLoading && (
             <div className="text-center py-4 text-[11px] text-surface-500">
-              No custom sounds yet. Upload an audio file above to get started.
+              No custom sounds yet. Upload an audio file above to personalize your timers.
             </div>
           )
         )}
 
         {/* IndexedDB not supported warning */}
         {!isSupported && (
-          <div className="flex items-center gap-2 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs">
-            <HardDrive size={13} />
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs">
+            <HardDrive size={14} />
             <span>IndexedDB not available in this browser — custom sounds cannot be stored.</span>
           </div>
         )}
@@ -488,16 +487,16 @@ function SavedMediaLinksSection({ savedMediaLinks = [], onChangeLinks }) {
   };
 
   return (
-    <div className="space-y-3 pt-2 border-t border-surface-700/50">
+    <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-700/60">
       <div className="flex items-center gap-2">
-        <Link size={15} className="text-primary-400" />
-        <h3 className="text-xs font-semibold text-surface-200 uppercase tracking-wider">
-          Saved Media Links
+        <Link size={15} className="text-primary-500" />
+        <h3 className="text-xs font-bold text-surface-900 dark:text-surface-200 uppercase tracking-wider">
+          Saved Ambient Media Streams
         </h3>
       </div>
 
-      <p className="text-[10px] text-surface-500">
-        Save YouTube or Spotify links here — they'll appear as quick presets in the Focus Room player.
+      <p className="text-[11px] text-surface-500">
+        Bookmark your favorite YouTube and Spotify music streams for quick one-click playback in the Focus Room.
       </p>
 
       {/* Add URL input */}
@@ -507,20 +506,20 @@ function SavedMediaLinksSection({ savedMediaLinks = [], onChangeLinks }) {
           value={inputUrl}
           onChange={(e) => { setInputUrl(e.target.value); setInputError(''); }}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
-          placeholder="YouTube or Spotify URL…"
+          placeholder="Paste YouTube or Spotify URL…"
           className="input text-xs flex-1"
         />
         <button
           type="button"
           onClick={handleAdd}
-          className="btn-primary px-3 py-2 text-xs shrink-0"
+          className="btn-primary px-4 py-2 text-xs shrink-0"
         >
-          Save
+          Save Stream
         </button>
       </div>
 
       {inputError && (
-        <p className="text-[11px] text-danger-400 flex items-center gap-1">
+        <p className="text-[11px] text-danger-500 flex items-center gap-1 font-medium">
           <AlertCircle size={12} /> {inputError}
         </p>
       )}
@@ -531,49 +530,49 @@ function SavedMediaLinksSection({ savedMediaLinks = [], onChangeLinks }) {
           {links.map((link) => (
             <div
               key={link.url}
-              className="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 group"
+              className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-surface-100 dark:bg-surface-850 border border-surface-300 dark:border-surface-700 shadow-warm-sm group"
             >
               <div className="flex items-center gap-2 min-w-0">
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase shrink-0 ${
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md uppercase shrink-0 ${
                   link.platform === 'spotify'
-                    ? 'bg-green-500/20 text-green-400'
-                    : 'bg-red-500/20 text-red-400'
+                    ? 'bg-green-500/20 text-green-600 dark:text-green-400 border border-green-500/30'
+                    : 'bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30'
                 }`}>
                   {link.platform === 'spotify' ? 'SPT' : 'YT'}
                 </span>
-                <span className="text-xs text-surface-300 truncate">{link.label || link.url}</span>
+                <span className="text-xs font-medium text-surface-800 dark:text-surface-200 truncate">{link.label || link.url}</span>
               </div>
               <div className="flex items-center gap-1 shrink-0">
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 rounded-lg text-surface-500 hover:text-primary-400 hover:bg-primary-500/10 transition-colors"
+                  className="p-1.5 rounded-lg text-surface-500 hover:text-primary-500 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
                   title="Open in new tab"
                 >
-                  <ExternalLink size={12} />
+                  <ExternalLink size={13} />
                 </a>
                 <button
                   type="button"
                   onClick={() => handleRemove(link.url)}
-                  className="p-1.5 rounded-lg text-surface-500 hover:text-danger-400 hover:bg-danger-500/10 transition-colors opacity-0 group-hover:opacity-100"
+                  className="p-1.5 rounded-lg text-surface-400 hover:text-danger-500 hover:bg-danger-500/10 transition-colors opacity-0 group-hover:opacity-100"
                   title="Remove link"
                 >
-                  <Trash2 size={12} />
+                  <Trash2 size={13} />
                 </button>
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-center text-[11px] text-surface-600 py-2">
-          No saved links yet. Add a YouTube or Spotify URL above.
+        <p className="text-center text-[11px] text-surface-500 py-2">
+          No saved streams yet. Add a YouTube or Spotify URL above.
         </p>
       )}
 
       {/* Quick add from presets */}
       <div className="pt-1">
-        <p className="text-[10px] text-surface-500 mb-1.5">Quick add popular stations:</p>
+        <p className="text-[10px] text-surface-500 font-medium mb-1.5">Quick add popular stations:</p>
         <div className="flex flex-wrap gap-1.5">
           {MEDIA_PRESETS.filter((p) => !links.find((l) => l.url === p.url)).map((preset) => (
             <button
@@ -585,7 +584,7 @@ function SavedMediaLinksSection({ savedMediaLinks = [], onChangeLinks }) {
                   onChangeLinks([...links, { url: preset.url, label: parsed.label, platform: parsed.platform }]);
                 }
               }}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] bg-surface-850 border border-surface-700 text-surface-400 hover:text-surface-200 hover:bg-surface-700 transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-medium bg-surface-100 dark:bg-surface-850 border border-surface-300 dark:border-surface-700 text-surface-700 dark:text-surface-300 hover:text-surface-900 dark:hover:text-surface-100 hover:bg-surface-200 dark:hover:bg-surface-700 shadow-warm-sm transition-colors"
             >
               {preset.emoji} {preset.label}
             </button>
