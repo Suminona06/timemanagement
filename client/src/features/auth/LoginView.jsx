@@ -47,7 +47,7 @@ export default function LoginView() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-surface-100 dark:bg-surface-900 px-4 py-8">
       <div className="w-full max-w-md space-y-8 animate-fade-in">
 
         {/* ── Brand mark ─────────────────────────────────────────────────── */}

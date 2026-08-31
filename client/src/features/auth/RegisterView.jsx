@@ -90,7 +90,7 @@ export default function RegisterView() {
   const strength = getPasswordStrength(form.password);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-900 px-4 py-10">
+    <div className="min-h-screen flex items-center justify-center bg-surface-100 dark:bg-surface-900 px-4 py-10">
       <div className="w-full max-w-md space-y-8 animate-fade-in">
 
         {/* ── Brand mark ─────────────────────────────────────────────────── */}

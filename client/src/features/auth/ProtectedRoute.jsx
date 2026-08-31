@@ -31,17 +31,23 @@ export default function ProtectedRoute() {
   // This prevents the redirect race condition on page reload.
   if (isInitializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-900">
+      <div className="min-h-screen flex items-center justify-center bg-surface-100 dark:bg-surface-900">
         <div className="flex flex-col items-center gap-4 animate-fade-in">
           <div className="relative">
-            <div className="w-14 h-14 rounded-2xl bg-primary-500/20 flex items-center justify-center">
-              <Clock size={28} className="text-primary-400" />
+            <div className="w-16 h-16 rounded-3xl overflow-hidden bg-primary-500/10 border border-primary-500/30 flex items-center justify-center shadow-warm-md">
+              <img
+                src="/logo.jpg"
+                alt="ChronoCraft"
+                className="w-full h-full object-cover"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <Clock size={28} className="absolute text-primary-400 -z-10" />
             </div>
-            <div className="absolute -inset-1 rounded-2xl border-2 border-primary-500/30 border-t-primary-500 animate-spin" />
+            <div className="absolute -inset-1.5 rounded-3xl border-2 border-primary-500/20 border-t-primary-500 animate-spin" />
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-surface-200">ChronoCraft</p>
-            <p className="text-xs text-surface-500 mt-0.5">Restoring your session…</p>
+            <p className="text-sm font-semibold text-surface-800 dark:text-surface-200 tracking-tight">ChronoCraft</p>
+            <p className="text-xs text-surface-500 mt-0.5">Restoring your mindful session…</p>
           </div>
         </div>
       </div>
