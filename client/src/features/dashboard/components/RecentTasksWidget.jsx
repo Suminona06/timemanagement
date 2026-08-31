@@ -27,15 +27,15 @@ export default function RecentTasksWidget() {
   };
 
   return (
-    <div className="card p-5 bg-surface-800 border-surface-700 space-y-4 flex flex-col justify-between h-full">
-      <div className="flex items-center justify-between pb-2 border-b border-surface-700/60">
-        <h3 className="text-sm font-semibold text-surface-100 flex items-center gap-2">
-          <CheckSquare size={16} className="text-primary-400" />
+    <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm space-y-4 flex flex-col justify-between h-full">
+      <div className="flex items-center justify-between pb-3 border-b border-surface-200 dark:border-surface-700/60">
+        <h3 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+          <CheckSquare size={16} className="text-primary-500" />
           Active & Pending Tasks
         </h3>
         <Link
           to="/tasks"
-          className="text-xs text-primary-400 hover:text-primary-300 font-medium flex items-center gap-0.5 transition-colors"
+          className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold flex items-center gap-0.5 transition-colors"
         >
           <span>All Tasks ({tasks.length})</span>
           <ChevronRight size={13} />
@@ -43,8 +43,8 @@ export default function RecentTasksWidget() {
       </div>
 
       {pendingTasks.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-8 text-surface-500 gap-2">
-          <CheckSquare size={28} className="opacity-30" />
+        <div className="flex flex-col items-center justify-center py-8 text-surface-400 gap-2">
+          <CheckSquare size={28} className="opacity-40 text-surface-300 dark:text-surface-600" />
           <p className="text-xs">No pending tasks remaining. Great work!</p>
         </div>
       ) : (
@@ -52,31 +52,31 @@ export default function RecentTasksWidget() {
           {pendingTasks.map((t) => (
             <div
               key={t._id}
-              className="flex items-center justify-between p-2.5 rounded-lg bg-surface-850 hover:bg-surface-750 border border-surface-700 transition-colors text-xs group"
+              className="flex items-center justify-between p-2.5 rounded-xl bg-surface-100 dark:bg-surface-850 hover:bg-surface-200 dark:hover:bg-surface-700/60 border border-surface-300 dark:border-surface-700 transition-colors text-xs shadow-warm-sm group"
             >
               <div className="flex items-center gap-2.5 truncate min-w-0 pr-2">
                 <button
                   onClick={() => handleToggleComplete(t)}
-                  className="text-surface-500 hover:text-success-400 transition-colors shrink-0"
+                  className="text-surface-400 hover:text-success-500 transition-colors shrink-0 p-0.5 rounded"
                   title="Mark as complete"
                   aria-label="Mark as complete"
                 >
                   <CheckCircle2 size={16} />
                 </button>
                 <div className="space-y-0.5 truncate">
-                  <p className="font-medium text-surface-200 truncate">{t.title}</p>
-                  <div className="flex items-center gap-2 text-[10px] text-surface-400">
+                  <p className="font-semibold text-surface-800 dark:text-surface-200 truncate">{t.title}</p>
+                  <div className="flex items-center gap-2 text-[10px] text-surface-500 font-mono">
                     {t.categoryId && (
                       <Badge
                         label={t.categoryId.name || 'Category'}
                         color={t.categoryId.color}
                         size="sm"
-                        className="text-[9px] py-0 px-1"
+                        className="text-[9px] py-0 px-1 font-sans"
                       />
                     )}
                     {t.estimatedMinutes > 0 && (
                       <span className="flex items-center gap-0.5">
-                        <Clock size={10} />
+                        <Clock size={10} className="text-primary-500" />
                         {formatMinutes(t.actualMinutes)} / {formatMinutes(t.estimatedMinutes)}
                       </span>
                     )}
@@ -86,7 +86,7 @@ export default function RecentTasksWidget() {
 
               <button
                 onClick={() => handleStartTask(t._id)}
-                className="p-1.5 rounded-lg bg-surface-700 text-surface-300 hover:bg-primary-500 hover:text-white transition-colors shrink-0"
+                className="p-1.5 rounded-lg bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-300 hover:bg-primary-500 hover:text-white transition-colors shrink-0 shadow-sm"
                 title="Start focus timer"
                 aria-label="Start focus timer"
               >

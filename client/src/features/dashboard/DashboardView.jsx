@@ -4,12 +4,9 @@ import {
   LayoutDashboard,
   Clock,
   CheckCircle2,
-  Flame,
   Sparkles,
   Calendar,
-  ArrowUpRight,
   TrendingUp,
-  Loader2,
 } from 'lucide-react';
 import { format, isToday } from 'date-fns';
 import useAuthStore from '../../stores/authStore';
@@ -89,44 +86,44 @@ export default function DashboardView() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-8 animate-fade-in">
       {/* ── Welcome Header ─────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-800 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-300 dark:border-surface-700/80 pb-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-surface-100 flex items-center gap-2">
-            <LayoutDashboard size={24} className="text-primary-400" />
-            {greeting}, {user?.username || 'Focus Master'}!
+          <h1 className="text-xl sm:text-2xl font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2 tracking-tight">
+            <LayoutDashboard size={24} className="text-primary-500" />
+            {greeting}, {user?.username || 'Mindful Crafter'}!
           </h1>
-          <p className="text-xs sm:text-sm text-surface-400 mt-0.5">
-            {formattedToday} · Ready to make today productive and focused?
+          <p className="text-xs sm:text-sm text-surface-500 mt-0.5">
+            {formattedToday} · Step into flow and craft your day with intention.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             to="/timer"
-            className="btn-primary text-xs py-2 px-3 gap-1.5 shadow-md shadow-primary-500/20"
+            className="btn-primary text-xs py-2 px-3.5 gap-1.5 shadow-warm-sm"
           >
             <Sparkles size={14} />
             Focus Room
           </Link>
           <Link
             to="/analytics"
-            className="btn-ghost text-xs py-2 px-3 gap-1.5"
+            className="btn-ghost text-xs py-2 px-3.5 gap-1.5 rounded-xl shadow-warm-sm"
           >
-            <TrendingUp size={14} />
+            <TrendingUp size={14} className="text-primary-500" />
             Analytics
           </Link>
         </div>
       </div>
 
-      {/* ── Top Summary KPI Cards ──────────────────────────────────────── */}
+      {/* ── Top Summary KPI Cards with Pastel Borders & Accents ──────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Today's Focus Time */}
-        <div className="card p-4 bg-surface-800 border-surface-700 space-y-1">
-          <span className="text-xs text-surface-400 font-medium flex items-center gap-1.5">
-            <Clock size={14} className="text-primary-400" />
+        <div className="card p-4 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 border-l-[4px] border-l-primary-500 shadow-warm-sm space-y-1">
+          <span className="text-xs text-surface-500 font-semibold flex items-center gap-1.5">
+            <Clock size={14} className="text-primary-500" />
             Focus Time Today
           </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-surface-100 font-mono">
+          <div className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-surface-100 font-mono tracking-tight">
             {formatMinutes(todayTrackedMinutes)}
           </div>
           <p className="text-[11px] text-surface-500">
@@ -135,12 +132,12 @@ export default function DashboardView() {
         </div>
 
         {/* KPI 2: Tasks Completed */}
-        <div className="card p-4 bg-surface-800 border-surface-700 space-y-1">
-          <span className="text-xs text-surface-400 font-medium flex items-center gap-1.5">
-            <CheckCircle2 size={14} className="text-emerald-400" />
+        <div className="card p-4 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 border-l-[4px] border-l-pastel-matcha-dark dark:border-l-pastel-matcha shadow-warm-sm space-y-1">
+          <span className="text-xs text-surface-500 font-semibold flex items-center gap-1.5">
+            <CheckCircle2 size={14} className="text-pastel-matcha-dark dark:text-pastel-matcha" />
             Tasks Completed
           </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-surface-100 font-mono">
+          <div className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-surface-100 font-mono tracking-tight">
             {completedTasksCount} <span className="text-sm font-sans font-medium text-surface-400">/ {tasks.length}</span>
           </div>
           <p className="text-[11px] text-surface-500">
@@ -149,12 +146,12 @@ export default function DashboardView() {
         </div>
 
         {/* KPI 3: Today's Focus Sessions */}
-        <div className="card p-4 bg-surface-800 border-surface-700 space-y-1">
-          <span className="text-xs text-surface-400 font-medium flex items-center gap-1.5">
-            <Sparkles size={14} className="text-cyan-400" />
+        <div className="card p-4 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 border-l-[4px] border-l-pastel-chai-dark dark:border-l-pastel-chai shadow-warm-sm space-y-1">
+          <span className="text-xs text-surface-500 font-semibold flex items-center gap-1.5">
+            <Sparkles size={14} className="text-pastel-chai-dark dark:text-pastel-chai" />
             Sessions Logged
           </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-surface-100 font-mono">
+          <div className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-surface-100 font-mono tracking-tight">
             {todayLogs.length}
           </div>
           <p className="text-[11px] text-surface-500">
@@ -163,16 +160,16 @@ export default function DashboardView() {
         </div>
 
         {/* KPI 4: Scheduled Due Today */}
-        <div className="card p-4 bg-surface-800 border-surface-700 space-y-1">
-          <span className="text-xs text-surface-400 font-medium flex items-center gap-1.5">
-            <Calendar size={14} className="text-amber-400" />
+        <div className="card p-4 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 border-l-[4px] border-l-pastel-peach-dark dark:border-l-pastel-peach shadow-warm-sm space-y-1">
+          <span className="text-xs text-surface-500 font-semibold flex items-center gap-1.5">
+            <Calendar size={14} className="text-pastel-peach-dark dark:text-pastel-peach" />
             Tasks Due Today
           </span>
-          <div className="text-2xl sm:text-3xl font-extrabold text-surface-100 font-mono">
+          <div className="text-2xl sm:text-3xl font-extrabold text-surface-900 dark:text-surface-100 font-mono tracking-tight">
             {todayTasks.length}
           </div>
           <p className="text-[11px] text-surface-500">
-            <Link to="/calendar" className="text-primary-400 hover:underline">
+            <Link to="/calendar" className="text-primary-600 dark:text-primary-400 font-semibold hover:underline">
               View on calendar →
             </Link>
           </p>

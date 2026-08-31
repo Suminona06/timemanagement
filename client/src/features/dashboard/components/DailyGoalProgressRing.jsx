@@ -1,8 +1,9 @@
-import { Sparkles, CheckCircle2, Award, Zap } from 'lucide-react';
+import { Zap, CheckCircle2 } from 'lucide-react';
 import { formatMinutes } from '../../../utils/timeFormatters';
 
 /**
  * DailyGoalProgressRing — Circular progress ring visualizing today's tracked focus time vs daily goal.
+ * Styled with ChronoCraft Warm Lo-Fi & Pastel palette.
  *
  * Props:
  *  todayMinutes   — Total minutes tracked today (number)
@@ -25,29 +26,39 @@ export default function DailyGoalProgressRing({
 
   const remainingMinutes = Math.max(0, goalMinutes - todayMinutes);
 
+  // Warm Lo-Fi Ring Color
+  const ringColor = isGoalReached ? '#8DA780' : '#C88A58';
+
   return (
-    <div className="card p-5 bg-surface-800 border-surface-700 flex flex-col items-center text-center justify-between h-full relative overflow-hidden">
+    <div className="card p-5 bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700/80 shadow-warm-sm flex flex-col items-center text-center justify-between h-full relative overflow-hidden">
       {/* Top Header */}
-      <div className="w-full flex items-center justify-between pb-2 border-b border-surface-700/60">
-        <h3 className="text-sm font-semibold text-surface-100 flex items-center gap-2">
-          <Zap size={16} className="text-amber-400" />
+      <div className="w-full flex items-center justify-between pb-3 border-b border-surface-200 dark:border-surface-700/60">
+        <h3 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+          <Zap size={16} className="text-primary-500" />
           Daily Focus Goal
         </h3>
-        <span className="text-xs text-surface-400 font-medium">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-surface-200/70 dark:bg-surface-700 text-surface-600 dark:text-surface-300">
           Target: {dailyGoalHours}h
         </span>
       </div>
 
       {/* Center SVG Ring Meter */}
       <div className="relative my-3 flex items-center justify-center">
+        {isGoalReached && (
+          <div
+            className="absolute inset-2 rounded-full filter blur-xl opacity-20 pointer-events-none"
+            style={{ backgroundColor: ringColor }}
+          />
+        )}
         <svg width={size} height={size} className="transform -rotate-90">
           {/* Background Track */}
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#334155"
+            stroke="currentColor"
             strokeWidth={strokeWidth}
+            className="text-surface-200 dark:text-surface-700"
             fill="transparent"
           />
           {/* Progress Arc */}
@@ -55,7 +66,7 @@ export default function DailyGoalProgressRing({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke={isGoalReached ? '#10B981' : '#3B82F6'}
+            stroke={ringColor}
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
@@ -63,17 +74,17 @@ export default function DailyGoalProgressRing({
             fill="transparent"
             className="transition-all duration-700 ease-out"
             style={{
-              filter: isGoalReached ? 'drop-shadow(0 0 8px rgba(16,185,129,0.5))' : 'none',
+              filter: isGoalReached ? 'drop-shadow(0 0 8px rgba(141,167,128,0.6))' : 'drop-shadow(0 0 6px rgba(200,138,88,0.4))',
             }}
           />
         </svg>
 
         {/* Center Labels */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-extrabold text-surface-100 font-mono tracking-tight">
+          <span className="text-3xl font-extrabold text-surface-900 dark:text-surface-100 font-mono tracking-tight">
             {percent}%
           </span>
-          <span className="text-[11px] text-surface-400 font-medium mt-0.5">
+          <span className="text-xs text-surface-500 font-medium mt-0.5 font-mono">
             {formatMinutes(todayMinutes)}
           </span>
         </div>
@@ -82,13 +93,13 @@ export default function DailyGoalProgressRing({
       {/* Bottom Status Text */}
       <div className="w-full pt-1">
         {isGoalReached ? (
-          <div className="flex items-center justify-center gap-1.5 text-xs text-success-400 font-semibold bg-success-500/10 py-1.5 rounded-lg border border-success-500/20">
-            <CheckCircle2 size={14} />
+          <div className="flex items-center justify-center gap-1.5 text-xs text-pastel-matcha-dark dark:text-pastel-matcha font-bold bg-pastel-matcha-light/40 dark:bg-pastel-matcha/20 py-2 rounded-xl border border-pastel-matcha/30">
+            <CheckCircle2 size={15} />
             Daily Goal Accomplished! 🎉
           </div>
         ) : (
-          <p className="text-xs text-surface-400">
-            <strong className="text-surface-200">{formatMinutes(remainingMinutes)}</strong> left to reach your daily goal.
+          <p className="text-xs text-surface-500">
+            <strong className="text-surface-800 dark:text-surface-200">{formatMinutes(remainingMinutes)}</strong> left to reach today&apos;s mindful target.
           </p>
         )}
       </div>
