@@ -1,5 +1,5 @@
 /* ── Google Fonts import — must precede all other statements ──────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -19,12 +19,17 @@
   }
 
   body {
-    @apply font-sans antialiased bg-surface-100 text-slate-800
-           dark:bg-surface-900 dark:text-surface-200;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    @apply font-sans antialiased bg-surface-100 text-surface-500
+           dark:bg-surface-900 dark:text-surface-300;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* Scrollbar styling for dark mode */
+  /* Headings with warm text in light mode and cozy cream in dark mode */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-surface-900 dark:text-surface-100 font-semibold;
+  }
+
+  /* Scrollbar styling for warm lo-fi aesthetic */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -33,15 +38,15 @@
     @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-600 rounded-full;
+    @apply bg-surface-300 dark:bg-surface-600 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-surface-500;
+    @apply bg-surface-400 dark:bg-surface-500;
   }
 
-  /* Focus ring consistent with brand */
+  /* Focus ring consistent with warm caramel amber */
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-surface-900;
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-surface-100 dark:ring-offset-surface-900;
   }
 }
 
@@ -49,58 +54,84 @@
 @layer components {
   /* Card surface */
   .card {
-    @apply bg-white dark:bg-surface-800 rounded-xl border border-slate-200
-           dark:border-surface-700 shadow-sm;
+    @apply bg-white dark:bg-surface-800 rounded-2xl border border-surface-300
+           dark:border-surface-700/80 shadow-warm-sm dark:shadow-dark-warm transition-all duration-150;
   }
 
   /* Primary button */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
-           bg-primary-500 hover:bg-primary-600
-           text-white text-sm font-medium
-           transition-colors duration-150
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+           bg-primary-500 hover:bg-primary-600 active:bg-primary-700
+           text-white text-sm font-medium shadow-sm shadow-primary-500/20
+           transition-all duration-150
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Ghost / outline button */
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
-           bg-transparent hover:bg-surface-100 dark:hover:bg-surface-700
-           text-slate-700 dark:text-surface-300 text-sm font-medium
-           border border-slate-200 dark:border-surface-600
-           transition-colors duration-150
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+           bg-transparent hover:bg-surface-200 dark:hover:bg-surface-700/80
+           text-surface-700 dark:text-surface-300 text-sm font-medium
+           border border-surface-300 dark:border-surface-600/80
+           transition-all duration-150
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Danger / destructive button */
   .btn-danger {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg
-           bg-danger-500 hover:bg-danger-600
-           text-white text-sm font-medium
-           transition-colors duration-150
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl
+           bg-danger-500 hover:bg-danger-600 active:bg-danger-700
+           text-white text-sm font-medium shadow-sm shadow-danger-500/20
+           transition-all duration-150
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Form input */
   .input {
-    @apply w-full px-3 py-2 rounded-lg text-sm
-           bg-white dark:bg-surface-700
-           border border-slate-200 dark:border-surface-600
-           text-slate-800 dark:text-surface-200
-           placeholder:text-slate-400 dark:placeholder:text-surface-500
+    @apply w-full px-3.5 py-2.5 rounded-xl text-sm
+           bg-white dark:bg-surface-700/60
+           border border-surface-300 dark:border-surface-600
+           text-surface-900 dark:text-surface-100
+           placeholder:text-surface-400 dark:placeholder:text-surface-500
            focus:border-primary-500 dark:focus:border-primary-400
            focus:ring-1 focus:ring-primary-500
-           transition-colors duration-150;
+           transition-all duration-150;
   }
 
   /* Form label */
   .label {
-    @apply block text-xs font-medium text-slate-600 dark:text-surface-400 mb-1;
+    @apply block text-xs font-semibold text-surface-700 dark:text-surface-300 mb-1.5;
   }
 
   /* Badge pill */
   .badge {
-    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Pastel Badges (PRD 2.2) */
+  .badge-matcha {
+    @apply bg-pastel-matcha-light/40 text-pastel-matcha-dark border border-pastel-matcha/30
+           dark:bg-pastel-matcha/20 dark:text-pastel-matcha dark:border-pastel-matcha/30;
+  }
+
+  .badge-peach {
+    @apply bg-pastel-peach-light/40 text-pastel-peach-dark border border-pastel-peach/30
+           dark:bg-pastel-peach/20 dark:text-pastel-peach dark:border-pastel-peach/30;
+  }
+
+  .badge-chai {
+    @apply bg-pastel-chai-light/40 text-pastel-chai-dark border border-pastel-chai/30
+           dark:bg-pastel-chai/20 dark:text-pastel-chai dark:border-pastel-chai/30;
+  }
+
+  .badge-lavender {
+    @apply bg-pastel-lavender-light/40 text-pastel-lavender-dark border border-pastel-lavender/30
+           dark:bg-pastel-lavender/20 dark:text-pastel-lavender dark:border-pastel-lavender/30;
+  }
+
+  .badge-sky {
+    @apply bg-pastel-sky-light/40 text-pastel-sky-dark border border-pastel-sky/30
+           dark:bg-pastel-sky/20 dark:text-pastel-sky dark:border-pastel-sky/30;
   }
 }
 

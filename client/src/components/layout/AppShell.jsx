@@ -91,8 +91,14 @@ export default function AppShell({ children }) {
       >
         {/* Brand */}
         <div className="flex items-center gap-3 px-5 py-4 border-b border-surface-700">
-          <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-primary-500 text-white shrink-0 shadow-md shadow-primary-500/20">
-            <Clock size={18} />
+          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl overflow-hidden bg-primary-500/10 border border-primary-500/30 text-primary-400 shrink-0 shadow-sm">
+            <img
+              src="/logo.jpg"
+              alt="ChronoCraft"
+              className="w-full h-full object-cover"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
+            <Clock size={18} className="absolute text-primary-400 -z-10" />
           </div>
           <span className="text-base font-semibold text-surface-100 tracking-tight">
             ChronoCraft

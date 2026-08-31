@@ -11,73 +11,148 @@ export default {
 
   theme: {
     extend: {
-      // ── Primary Accent Colour ─────────────────────────────────────────────
+      // ── ChronoCraft Brand Colors ───────────────────────────────────────────
       colors: {
+        // ── Brand Primary: Caramel Amber & Coffee Gold ───────────────────────
         primary: {
-          50:  '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',   // Brand primary
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          50:  '#FDF8F3',
+          100: '#F9EDE0',
+          200: '#F3D9C1',
+          300: '#E9BF9A',
+          400: '#DCA476',
+          500: '#C88A58',   // Brand Primary: Warm Caramel Amber
+          600: '#B47240',
+          700: '#93582A',   // Rich Amber Sand
+          800: '#764320',
+          900: '#4A2E1B',   // Deep Roast Coffee
+          950: '#3D2314',   // Espresso
         },
 
-        // ── Dark-mode surface palette (slate / zinc) ──────────────────────
+        // ── Lo-Fi Surface Palette (Warm Latte / Espresso Studio) ──────────────
         surface: {
-          900: '#0f172a',   // page background
-          800: '#1e293b',   // card / sidebar background
-          700: '#334155',   // elevated surface
-          600: '#475569',   // borders / dividers
-          500: '#64748b',   // muted text
-          400: '#94a3b8',   // secondary text
-          300: '#cbd5e1',   // body text (dark mode)
-          200: '#e2e8f0',   // headings (dark mode)
-          100: '#f1f5f9',   // page bg (light mode)
-          50:  '#f8fafc',   // card bg (light mode)
+          50:  '#FFFFFF',   // Pure Light Card
+          100: '#FAF7F2',   // Light Mode Canvas: Warm Latte / Milk Foam
+          200: '#F4EBE1',   // Soft Linen / Card Secondary
+          300: '#E8DFD8',   // Warm Border (Light Mode)
+          400: '#9E9188',   // Muted Secondary Text
+          500: '#786B61',   // Warm Muted Umber
+          600: '#3D3530',   // Dark Border / Divider
+          700: '#2E2724',   // Dark Mode Elevated Surface / Input
+          800: '#25201D',   // Dark Mode Card / Sidebar
+          850: '#1F1A17',   // Dark Mode Sub-Surface
+          900: '#191614',   // Dark Mode Canvas: Deep Espresso Charcoal
+          950: '#13100E',   // Deepest Midnight Tone
         },
 
-        // ── Semantic status colours ───────────────────────────────────────
+        // ── Authentic Coffee & Roast Tones ───────────────────────────────────
+        coffee: {
+          latte:   '#FAF7F2',
+          linen:   '#F4EBE1',
+          cream:   '#F7F2EC',
+          amber:   '#D4A373',
+          caramel: '#C88A58',
+          roast:   '#4A2E1B',
+          espresso:'#3D2314',
+          charcoal:'#191614',
+        },
+
+        // ── Mindful Lo-Fi Pastel Accents (PRD 2.2) ───────────────────────────
+        pastel: {
+          matcha: {
+            light:   '#D8E2DC',
+            DEFAULT: '#8DA780',
+            dark:    '#6B8560',
+          },
+          peach: {
+            light:   '#F8EDEB',
+            DEFAULT: '#E8B4B8',
+            dark:    '#C7888D',
+          },
+          chai: {
+            light:   '#FAEDCD',
+            DEFAULT: '#E9D8A6',
+            dark:    '#C5B072',
+          },
+          lavender: {
+            light:   '#E8E8F4',
+            DEFAULT: '#B8B8D1',
+            dark:    '#8E8EA8',
+          },
+          sky: {
+            light:   '#EDF6F9',
+            DEFAULT: '#A2D2FF',
+            dark:    '#73A5D4',
+          },
+        },
+
+        // ── Semantic status colours (Warm Lo-Fi Tuned) ──────────────────────
         success: {
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
+          50:  '#F4F7F2',
+          100: '#E6EEE2',
+          200: '#D1DFC9',
+          300: '#B3CAAA',
+          400: '#8DA780',   // Matcha Green
+          500: '#759468',
+          600: '#5C7A50',
+          700: '#46603C',
+          800: '#32472B',
+          900: '#21301D',
         },
         warning: {
-          400: '#facc15',
-          500: '#eab308',
-          600: '#ca8a04',
+          50:  '#FDFBF5',
+          100: '#FAF5E8',
+          200: '#F4E9CE',
+          300: '#ECD9AC',
+          400: '#E9D8A6',   // Warm Chai Amber
+          500: '#D4BC78',
+          600: '#B29853',
+          700: '#8E773B',
+          800: '#695729',
+          900: '#483B1A',
         },
         danger: {
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
+          50:  '#FDF6F6',
+          100: '#FBEDED',
+          200: '#F5D7D9',
+          300: '#ECB9BD',
+          400: '#E8B4B8',   // Dusty Peach
+          500: '#D88A90',
+          600: '#BA666D',
+          700: '#9B4B52',
+          800: '#7B353B',
+          900: '#582126',
         },
       },
 
-      // ── Custom font stack ─────────────────────────────────────────────────
+      // ── Custom Font Stack ──────────────────────────────────────────────────
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'Fira Code', 'monospace'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
 
-      // ── Extra border radius ───────────────────────────────────────────────
+      // ── Extra Border Radius for Tactile Cozy Feel ──────────────────────────
       borderRadius: {
-        xl:  '0.75rem',
-        '2xl': '1rem',
-        '3xl': '1.5rem',
+        xl:   '0.75rem',
+        '2xl':'1rem',
+        '3xl':'1.5rem',
+        '4xl':'2rem',
       },
 
-      // ── Animation for timer ring / progress elements ──────────────────────
+      // ── Tactile Box Shadows ────────────────────────────────────────────────
+      boxShadow: {
+        'warm-sm': '0 1px 2px 0 rgba(45, 30, 18, 0.05)',
+        'warm-md': '0 4px 12px -2px rgba(45, 30, 18, 0.08), 0 2px 6px -1px rgba(45, 30, 18, 0.04)',
+        'warm-lg': '0 10px 25px -3px rgba(45, 30, 18, 0.12), 0 4px 10px -2px rgba(45, 30, 18, 0.06)',
+        'dark-warm': '0 8px 24px -4px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(200, 138, 88, 0.05)',
+      },
+
+      // ── Animations ─────────────────────────────────────────────────────────
       animation: {
         'spin-slow':   'spin 3s linear infinite',
         'pulse-slow':  'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'fade-in':     'fadeIn 0.2s ease-in-out',
-        'slide-up':    'slideUp 0.2s ease-out',
+        'fade-in':     'fadeIn 0.25s ease-out',
+        'slide-up':    'slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         fadeIn: {

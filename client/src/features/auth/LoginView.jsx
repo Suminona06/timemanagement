@@ -52,12 +52,18 @@ export default function LoginView() {
 
         {/* ── Brand mark ─────────────────────────────────────────────────── */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl
-                          bg-primary-500 text-white mb-4 shadow-lg">
-            <Clock size={28} />
+          <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-3xl
+                          bg-primary-500/10 border border-primary-500/30 overflow-hidden mb-3 shadow-warm-md">
+            <img
+              src="/logo.jpg"
+              alt="ChronoCraft"
+              className="w-full h-full object-cover"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
+            <Clock size={28} className="absolute text-primary-400 -z-10" />
           </div>
-          <h1 className="text-2xl font-bold text-surface-100">Welcome back</h1>
-          <p className="mt-1 text-sm text-surface-400">Sign in to your ChronoCraft account</p>
+          <h1 className="text-2xl font-bold text-surface-900 dark:text-surface-100 font-sans tracking-tight">Welcome back</h1>
+          <p className="mt-1 text-sm text-surface-500 dark:text-surface-400">Sign in to your ChronoCraft account</p>
         </div>
 
         {/* ── Card ────────────────────────────────────────────────────────── */}
