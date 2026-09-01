@@ -5,7 +5,6 @@ import {
   subDays,
   startOfWeek,
   endOfWeek,
-  isToday,
 } from 'date-fns';
 import {
   Calendar as CalendarIcon,
@@ -14,7 +13,6 @@ import {
   Plus,
   Clock,
   CheckSquare,
-  Sparkles,
   Loader2,
   Trash2,
 } from 'lucide-react';
@@ -29,6 +27,7 @@ import Modal from '../../components/common/Modal';
 
 /**
  * CalendarView — Interactive daily & weekly time-blocking schedule grid.
+ * Harmonized with ChronoCraft Warm Lo-Fi light and dark mode.
  */
 export default function CalendarView() {
   const { tasks, loadTasks, init } = useTaskStore();
@@ -163,34 +162,34 @@ export default function CalendarView() {
       {/* ── Header & Navigation Bar ───────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-surface-100 flex items-center gap-2">
-            <CalendarIcon size={20} className="text-primary-400" />
+          <h1 className="text-xl font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+            <CalendarIcon size={20} className="text-primary-500" />
             Calendar & Time-Blocking
           </h1>
-          <p className="text-xs text-surface-400 mt-0.5">
-            Visualize your scheduled tasks alongside actual completed time blocks.
+          <p className="text-xs text-surface-500 mt-0.5">
+            Visualize your scheduled tasks alongside actual completed focus blocks.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Daily / Weekly View Switcher */}
-          <div className="flex bg-surface-800 p-1 rounded-xl border border-surface-700">
+          <div className="flex bg-surface-200/80 dark:bg-surface-800 p-1 rounded-2xl border border-surface-300 dark:border-surface-700 shadow-warm-sm">
             <button
               onClick={() => setViewMode('daily')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                 viewMode === 'daily'
-                  ? 'bg-primary-500 text-white shadow-sm'
-                  : 'text-surface-400 hover:text-surface-200'
+                  ? 'bg-primary-500 text-white shadow-sm font-bold'
+                  : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-200'
               }`}
             >
               Day
             </button>
             <button
               onClick={() => setViewMode('weekly')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${
                 viewMode === 'weekly'
-                  ? 'bg-primary-500 text-white shadow-sm'
-                  : 'text-surface-400 hover:text-surface-200'
+                  ? 'bg-primary-500 text-white shadow-sm font-bold'
+                  : 'text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-200'
               }`}
             >
               Week
@@ -203,7 +202,7 @@ export default function CalendarView() {
               setManualModalDefaults({});
               setIsManualLogModalOpen(true);
             }}
-            className="btn-primary text-xs py-2 px-3 gap-1.5"
+            className="btn-primary text-xs py-2 px-3.5 gap-1.5 shadow-warm-sm"
           >
             <Plus size={14} />
             Log Time
@@ -212,45 +211,45 @@ export default function CalendarView() {
       </div>
 
       {/* ── Date Navigator & Summary Bar ──────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-800 p-3 rounded-2xl border border-surface-700 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-surface-50 dark:bg-surface-800 p-3.5 rounded-2xl border border-surface-300 dark:border-surface-700/80 shadow-warm-sm">
         {/* Date Navigation Buttons */}
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrev}
-            className="p-1.5 rounded-lg bg-surface-700 hover:bg-surface-600 text-surface-300 hover:text-white transition-colors"
+            className="p-1.5 rounded-xl bg-surface-200/80 dark:bg-surface-700 hover:bg-surface-300 dark:hover:bg-surface-600 text-surface-700 dark:text-surface-200 transition-colors shadow-sm"
             title="Previous period"
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={handleToday}
-            className="px-2.5 py-1 rounded-lg text-xs font-medium bg-surface-700 hover:bg-surface-600 text-surface-200 transition-colors"
+            className="px-3 py-1 rounded-xl text-xs font-bold bg-surface-200/80 dark:bg-surface-700 hover:bg-surface-300 dark:hover:bg-surface-600 text-surface-800 dark:text-surface-100 transition-colors shadow-sm"
           >
             Today
           </button>
           <button
             onClick={handleNext}
-            className="p-1.5 rounded-lg bg-surface-700 hover:bg-surface-600 text-surface-300 hover:text-white transition-colors"
+            className="p-1.5 rounded-xl bg-surface-200/80 dark:bg-surface-700 hover:bg-surface-300 dark:hover:bg-surface-600 text-surface-700 dark:text-surface-200 transition-colors shadow-sm"
             title="Next period"
           >
             <ChevronRight size={16} />
           </button>
 
-          <span className="text-sm font-semibold text-surface-100 ml-2 font-mono">
+          <span className="text-sm font-bold text-surface-900 dark:text-surface-100 ml-2 font-mono">
             {dateRangeLabel}
           </span>
         </div>
 
         {/* Metric Badges */}
-        <div className="flex items-center gap-3 text-xs text-surface-400">
+        <div className="flex items-center gap-3 text-xs text-surface-500 font-medium">
           <span className="flex items-center gap-1.5">
-            <Clock size={13} className="text-primary-400" />
-            Tracked: <strong className="text-surface-100">{formatMinutes(totalLoggedMinutes)}</strong>
+            <Clock size={13} className="text-primary-500" />
+            Tracked: <strong className="text-surface-900 dark:text-surface-100 font-mono">{formatMinutes(totalLoggedMinutes)}</strong>
           </span>
-          <span className="text-surface-600">|</span>
+          <span className="text-surface-300 dark:text-surface-600">|</span>
           <span className="flex items-center gap-1.5">
-            <CheckSquare size={13} className="text-amber-400" />
-            Due Tasks: <strong className="text-surface-100">{rangeTasks.length}</strong>
+            <CheckSquare size={13} className="text-pastel-chai-dark dark:text-pastel-chai" />
+            Due Tasks: <strong className="text-surface-900 dark:text-surface-100 font-mono">{rangeTasks.length}</strong>
           </span>
         </div>
       </div>
@@ -259,8 +258,8 @@ export default function CalendarView() {
       <div className="flex-1 min-h-0 flex flex-col">
         {isLoadingLogs ? (
           <div className="flex flex-col items-center justify-center h-64 gap-2 text-surface-400">
-            <Loader2 size={24} className="animate-spin text-primary-400" />
-            <span className="text-xs">Loading schedule...</span>
+            <Loader2 size={24} className="animate-spin text-primary-500" />
+            <span className="text-xs font-medium">Loading schedule…</span>
           </div>
         ) : viewMode === 'daily' ? (
           <DailyTimelineGrid
@@ -299,38 +298,38 @@ export default function CalendarView() {
         >
           <div className="space-y-4">
             <div className="space-y-1">
-              <h3 className="text-base font-semibold text-surface-100">
+              <h3 className="text-base font-bold text-surface-900 dark:text-surface-100">
                 {selectedLogDetail.taskId?.title || selectedLogDetail.notes || 'Focus Session'}
               </h3>
-              <div className="text-xs text-surface-400 flex items-center gap-2">
-                <Clock size={12} />
-                <span>
+              <div className="text-xs text-surface-500 flex items-center gap-2">
+                <Clock size={12} className="text-primary-500" />
+                <span className="font-mono">
                   {formatTimeOfDay(selectedLogDetail.startTime)} – {formatTimeOfDay(selectedLogDetail.endTime)}
                 </span>
-                <span className="font-bold text-surface-200">
+                <span className="font-bold text-surface-800 dark:text-surface-200 font-mono">
                   ({formatMinutes(selectedLogDetail.durationMinutes)})
                 </span>
               </div>
             </div>
 
             {selectedLogDetail.notes && (
-              <p className="text-xs text-surface-300 bg-surface-850 p-2.5 rounded-lg border border-surface-700">
+              <p className="text-xs text-surface-700 dark:text-surface-300 bg-surface-100 dark:bg-surface-850 p-3 rounded-xl border border-surface-200 dark:border-surface-700">
                 {selectedLogDetail.notes}
               </p>
             )}
 
-            <div className="flex justify-between items-center pt-2 border-t border-surface-700">
+            <div className="flex justify-between items-center pt-2 border-t border-surface-200 dark:border-surface-700">
               <button
                 onClick={() => handleDeleteLog(selectedLogDetail._id)}
                 disabled={isDeletingLog}
-                className="btn-danger text-xs py-1.5 px-2.5 gap-1"
+                className="btn-danger text-xs py-1.5 px-3 gap-1"
               >
                 {isDeletingLog ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
                 Delete Log
               </button>
               <button
                 onClick={() => setSelectedLogDetail(null)}
-                className="btn-ghost text-xs py-1.5 px-3"
+                className="btn-ghost text-xs py-1.5 px-3.5"
               >
                 Close
               </button>

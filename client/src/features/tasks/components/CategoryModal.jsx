@@ -7,12 +7,7 @@ import useTaskStore from '../../../stores/taskStore';
 
 /**
  * CategoryModal — Manage all categories from a single dialog.
- *
- * Features:
- *  - List all existing categories with their color badge
- *  - Inline form to create a new category
- *  - Edit existing categories (name, color, description) inline
- *  - Delete categories with confirmation
+ * Harmonized for light and dark theme.
  *
  * Props:
  *  isOpen  — Boolean controlling visibility
@@ -31,7 +26,7 @@ export default function CategoryModal({ isOpen, onClose }) {
 
   // ── Create form state ───────────────────────────────────────────────────
   const [createForm, setCreateForm] = useState({
-    name: '', color: '#3B82F6', description: '',
+    name: '', color: '#C88A58', description: '',
   });
   const [createErrors, setCreateErrors] = useState({});
   const [isCreating,   setIsCreating]   = useState(false);
@@ -49,7 +44,7 @@ export default function CategoryModal({ isOpen, onClose }) {
   // Reset local state when modal closes
   useEffect(() => {
     if (!isOpen) {
-      setCreateForm({ name: '', color: '#3B82F6', description: '' });
+      setCreateForm({ name: '', color: '#C88A58', description: '' });
       setCreateErrors({});
       setEditingId(null);
       setEditForm({});
@@ -78,7 +73,7 @@ export default function CategoryModal({ isOpen, onClose }) {
         color:       createForm.color,
         description: createForm.description.trim(),
       });
-      setCreateForm({ name: '', color: '#3B82F6', description: '' });
+      setCreateForm({ name: '', color: '#C88A58', description: '' });
       setCreateErrors({});
     } catch {
       // Error shown via store.error
@@ -145,8 +140,8 @@ export default function CategoryModal({ isOpen, onClose }) {
 
         {/* ── Store error banner ───────────────────────────────────────── */}
         {error && (
-          <div className="flex gap-2 p-3 rounded-lg bg-danger-500/10
-                          border border-danger-500/30 text-danger-400 text-sm">
+          <div className="flex gap-2 p-3.5 rounded-2xl bg-danger-500/10
+                          border border-danger-500/30 text-danger-600 dark:text-danger-400 text-sm shadow-warm-sm">
             <span>⚠</span> <span>{error}</span>
           </div>
         )}
@@ -154,24 +149,24 @@ export default function CategoryModal({ isOpen, onClose }) {
         {/* ── Existing categories list ─────────────────────────────────── */}
         <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
           {categories.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center gap-2 py-6 text-surface-500">
+            <div className="flex flex-col items-center gap-2 py-6 text-surface-400">
               <Tag size={28} className="opacity-40" />
-              <p className="text-sm">No categories yet. Create one below.</p>
+              <p className="text-sm font-medium">No categories yet. Create one below.</p>
             </div>
           )}
 
           {categories.map((cat) => (
-            <div key={cat._id} className="rounded-lg border border-surface-700 overflow-hidden">
+            <div key={cat._id} className="rounded-2xl border border-surface-200 dark:border-surface-700/80 bg-surface-100/70 dark:bg-surface-850 overflow-hidden shadow-warm-sm">
 
               {/* ── View row ────────────────────────────────────────────── */}
               {editingId !== cat._id && deletingId !== cat._id && (
-                <div className="flex items-center gap-3 px-3 py-2.5">
+                <div className="flex items-center gap-3 px-3.5 py-2.5">
                   {/* Color swatch */}
                   <span
-                    className="w-3.5 h-3.5 rounded-sm shrink-0"
+                    className="w-3.5 h-3.5 rounded-md shrink-0 shadow-sm"
                     style={{ backgroundColor: cat.color }}
                   />
-                  <span className="flex-1 text-sm font-medium text-surface-200 truncate">
+                  <span className="flex-1 text-sm font-bold text-surface-800 dark:text-surface-200 truncate">
                     {cat.name}
                   </span>
                   {cat.description && (
@@ -183,16 +178,16 @@ export default function CategoryModal({ isOpen, onClose }) {
                   <div className="flex items-center gap-1 shrink-0">
                     <button
                       onClick={() => startEdit(cat)}
-                      className="p-1.5 rounded-md text-surface-400 hover:text-primary-400
-                                 hover:bg-primary-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-surface-500 hover:text-primary-600 dark:hover:text-primary-400
+                                 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
                       aria-label={`Edit ${cat.name}`}
                     >
                       <Pencil size={14} />
                     </button>
                     <button
                       onClick={() => { setDeletingId(cat._id); setEditingId(null); }}
-                      className="p-1.5 rounded-md text-surface-400 hover:text-danger-400
-                                 hover:bg-danger-500/10 transition-colors"
+                      className="p-1.5 rounded-lg text-surface-500 hover:text-danger-500
+                                 hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors"
                       aria-label={`Delete ${cat.name}`}
                     >
                       <Trash2 size={14} />
@@ -203,7 +198,7 @@ export default function CategoryModal({ isOpen, onClose }) {
 
               {/* ── Edit inline form ─────────────────────────────────────── */}
               {editingId === cat._id && (
-                <div className="p-3 space-y-3 bg-surface-750">
+                <div className="p-3.5 space-y-3 bg-surface-200/60 dark:bg-surface-750">
                   <div>
                     <label className="label">Name</label>
                     <input
@@ -214,7 +209,7 @@ export default function CategoryModal({ isOpen, onClose }) {
                       autoFocus
                     />
                     {editErrors.name && (
-                      <p className="mt-1 text-xs text-danger-400">{editErrors.name}</p>
+                      <p className="mt-1 text-xs text-danger-500 font-medium">{editErrors.name}</p>
                     )}
                   </div>
                   <div>
@@ -233,14 +228,14 @@ export default function CategoryModal({ isOpen, onClose }) {
                       placeholder="Short description"
                     />
                   </div>
-                  <div className="flex gap-2 justify-end">
-                    <button onClick={cancelEdit} className="btn-ghost text-xs px-3 py-1.5">
+                  <div className="flex gap-2 justify-end pt-1">
+                    <button onClick={cancelEdit} className="btn-ghost text-xs px-3.5 py-1.5">
                       Cancel
                     </button>
                     <button
                       onClick={() => handleSaveEdit(cat._id)}
                       disabled={isSaving}
-                      className="btn-primary text-xs px-3 py-1.5"
+                      className="btn-primary text-xs px-3.5 py-1.5"
                     >
                       {isSaving
                         ? <Loader2 size={13} className="animate-spin" />
@@ -252,20 +247,20 @@ export default function CategoryModal({ isOpen, onClose }) {
 
               {/* ── Delete confirmation row ──────────────────────────────── */}
               {deletingId === cat._id && (
-                <div className="flex items-center gap-3 px-3 py-2.5 bg-danger-500/10">
-                  <span className="flex-1 text-sm text-danger-300">
+                <div className="flex items-center gap-3 px-3.5 py-2.5 bg-danger-500/10">
+                  <span className="flex-1 text-xs sm:text-sm text-danger-600 dark:text-danger-300 font-medium">
                     Delete <strong>{cat.name}</strong>? Tasks will be unlinked.
                   </span>
                   <button
                     onClick={() => setDeletingId(null)}
-                    className="text-xs text-surface-400 hover:text-surface-200 px-2 py-1"
+                    className="text-xs text-surface-500 hover:text-surface-700 dark:hover:text-surface-200 px-2 py-1 font-semibold"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={() => handleDelete(cat._id)}
                     disabled={isDeleting}
-                    className="btn-danger text-xs px-3 py-1.5"
+                    className="btn-danger text-xs px-3 py-1.5 shadow-sm"
                   >
                     {isDeleting
                       ? <Loader2 size={13} className="animate-spin" />
@@ -278,11 +273,11 @@ export default function CategoryModal({ isOpen, onClose }) {
         </div>
 
         {/* ── Divider ─────────────────────────────────────────────────── */}
-        <hr className="border-surface-700" />
+        <hr className="border-surface-200 dark:border-surface-700" />
 
         {/* ── Create new category form ─────────────────────────────────── */}
         <form onSubmit={handleCreate} className="space-y-3">
-          <p className="text-xs font-semibold text-surface-400 uppercase tracking-wider">
+          <p className="text-xs font-bold text-surface-600 dark:text-surface-400 uppercase tracking-wider">
             New Category
           </p>
 
@@ -298,7 +293,7 @@ export default function CategoryModal({ isOpen, onClose }) {
                 placeholder="Category name"
               />
               {createErrors.name && (
-                <p className="mt-1 text-xs text-danger-400">{createErrors.name}</p>
+                <p className="mt-1 text-xs text-danger-500 font-medium">{createErrors.name}</p>
               )}
             </div>
             {/* Preview badge */}
@@ -328,7 +323,7 @@ export default function CategoryModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={isCreating}
-            className="btn-primary w-full justify-center"
+            className="btn-primary w-full justify-center shadow-warm-sm"
           >
             {isCreating
               ? <Loader2 size={15} className="animate-spin mr-2" />

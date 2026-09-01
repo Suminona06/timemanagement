@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Clock, Plus, Loader2, Calendar, CheckCircle2 } from 'lucide-react';
+import { Clock, Plus, Loader2, CheckCircle2 } from 'lucide-react';
 import Modal from '../../../components/common/Modal';
 import useTaskStore from '../../../stores/taskStore';
 import { createTimeLog } from '../../../services/timeLogService';
@@ -7,6 +7,7 @@ import { formatMinutes } from '../../../utils/timeFormatters';
 
 /**
  * ManualLogModal — Modal dialog for back-filling and logging historical time entries.
+ * Harmonized for light and dark theme.
  *
  * Props:
  *  isOpen    — Boolean controlling visibility
@@ -137,13 +138,13 @@ export default function ManualLogModal({
     <Modal isOpen={isOpen} onClose={onClose} title="Log Time Manually" size="md">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 rounded-lg bg-danger-500/10 border border-danger-500/30 text-danger-400 text-sm">
+          <div className="p-3.5 rounded-2xl bg-danger-500/10 border border-danger-500/30 text-danger-600 dark:text-danger-400 text-sm shadow-warm-sm">
             {error}
           </div>
         )}
 
         {successMessage && (
-          <div className="p-3 rounded-lg bg-success-500/10 border border-success-500/30 text-success-400 text-sm flex items-center gap-2">
+          <div className="p-3.5 rounded-2xl bg-pastel-matcha-light/50 dark:bg-success-500/10 border border-pastel-matcha/40 text-pastel-matcha-dark dark:text-success-400 text-sm flex items-center gap-2 font-bold shadow-warm-sm">
             <CheckCircle2 size={16} />
             {successMessage}
           </div>
@@ -186,12 +187,12 @@ export default function ManualLogModal({
         </div>
 
         {/* Calculated Duration Display */}
-        <div className="flex items-center justify-between p-3 rounded-lg bg-surface-850 border border-surface-700">
-          <span className="text-xs text-surface-400 font-medium flex items-center gap-1.5">
-            <Clock size={14} className="text-primary-400" />
+        <div className="flex items-center justify-between p-3.5 rounded-2xl bg-surface-100 dark:bg-surface-850 border border-surface-200 dark:border-surface-700 shadow-warm-sm">
+          <span className="text-xs text-surface-600 dark:text-surface-400 font-semibold flex items-center gap-1.5">
+            <Clock size={14} className="text-primary-500" />
             Total Duration:
           </span>
-          <span className="text-sm font-bold text-surface-100 font-mono">
+          <span className="text-sm font-bold text-surface-900 dark:text-surface-100 font-mono">
             {formatMinutes(durationMinutes)} ({durationMinutes} min)
           </span>
         </div>
@@ -257,14 +258,14 @@ export default function ManualLogModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-2 pt-2">
-          <button type="button" onClick={onClose} className="btn-ghost">
+        <div className="flex justify-end gap-2 pt-2 border-t border-surface-200 dark:border-surface-700">
+          <button type="button" onClick={onClose} className="btn-ghost text-xs py-2 px-3.5">
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading || durationMinutes <= 0}
-            className="btn-primary"
+            className="btn-primary text-xs py-2 px-4 shadow-warm-sm"
           >
             {isLoading ? (
               <>

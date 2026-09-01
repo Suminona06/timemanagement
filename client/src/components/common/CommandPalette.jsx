@@ -13,9 +13,7 @@ import {
   Moon,
   Sun,
   Clock,
-  Zap,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 import useTaskStore from '../../stores/taskStore';
 import useTimerStore from '../../stores/timerStore';
@@ -213,17 +211,17 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 p-4 bg-surface-950/60 backdrop-blur-sm animate-fade-in"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
       role="dialog"
       aria-modal="true"
     >
-      <div className="relative w-full max-w-xl bg-surface-850 border border-surface-700 rounded-2xl shadow-2xl overflow-hidden animate-slide-up flex flex-col max-h-[500px]">
+      <div className="relative w-full max-w-xl bg-surface-50 dark:bg-surface-850 border border-surface-300 dark:border-surface-700/80 rounded-3xl shadow-warm-lg dark:shadow-2xl overflow-hidden animate-slide-up flex flex-col max-h-[500px]">
         {/* Search Input Header */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-surface-700 bg-surface-800">
-          <Search size={18} className="text-primary-400 shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-surface-200 dark:border-surface-700 bg-surface-100/70 dark:bg-surface-800">
+          <Search size={18} className="text-primary-500 shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -234,9 +232,9 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Type a command or search tasks... (Press Esc to close)"
-            className="w-full bg-transparent text-sm text-surface-100 placeholder:text-surface-500 focus:outline-none"
+            className="w-full bg-transparent text-sm text-surface-900 dark:text-surface-100 placeholder:text-surface-400 dark:placeholder:text-surface-500 focus:outline-none"
           />
-          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-surface-400 bg-surface-700 rounded border border-surface-600">
+          <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold text-surface-500 bg-surface-200 dark:bg-surface-700 rounded-lg border border-surface-300 dark:border-surface-600">
             ESC
           </kbd>
         </div>
@@ -244,7 +242,7 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
         {/* Results List */}
         <div className="flex-1 overflow-y-auto p-2 space-y-1">
           {filteredItems.length === 0 ? (
-            <div className="py-8 text-center text-xs text-surface-500">
+            <div className="py-8 text-center text-xs text-surface-400">
               No matching commands or tasks found for &ldquo;{query}&rdquo;.
             </div>
           ) : (
@@ -257,18 +255,18 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
                   key={item.id}
                   onClick={item.action}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-colors text-left ${
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs transition-all text-left ${
                     isSelected
-                      ? 'bg-primary-500/15 text-primary-300 border border-primary-500/30'
-                      : 'text-surface-300 hover:bg-surface-800 border border-transparent'
+                      ? 'bg-primary-500/15 text-primary-700 dark:text-primary-300 border border-primary-500/30 font-semibold shadow-warm-sm'
+                      : 'text-surface-700 dark:text-surface-300 hover:bg-surface-200/80 dark:hover:bg-surface-800 border border-transparent'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate min-w-0 pr-2">
                     <Icon
                       size={15}
-                      className={isSelected ? 'text-primary-400 shrink-0' : 'text-surface-500 shrink-0'}
+                      className={isSelected ? 'text-primary-500 shrink-0' : 'text-surface-400 dark:text-surface-500 shrink-0'}
                     />
-                    <span className="font-medium truncate">{item.label}</span>
+                    <span className="truncate">{item.label}</span>
                     {item.taskData && item.taskData.categoryId && (
                       <Badge
                         label={item.taskData.categoryId.name}
@@ -280,10 +278,10 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
                   </div>
 
                   <div className="flex items-center gap-1.5 shrink-0 text-surface-500">
-                    <span className="text-[10px] text-surface-400 bg-surface-800 px-1.5 py-0.5 rounded border border-surface-700">
+                    <span className="text-[10px] text-surface-500 bg-surface-200/80 dark:bg-surface-800 px-2 py-0.5 rounded-lg border border-surface-300 dark:border-surface-700 font-medium">
                       {item.category}
                     </span>
-                    {isSelected && <ArrowRight size={13} className="text-primary-400" />}
+                    {isSelected && <ArrowRight size={13} className="text-primary-500" />}
                   </div>
                 </button>
               );
@@ -292,17 +290,17 @@ export default function CommandPalette({ isOpen, onClose, onNewTask }) {
         </div>
 
         {/* Footer Helper */}
-        <div className="flex items-center justify-between px-4 py-2 bg-surface-900 border-t border-surface-800 text-[11px] text-surface-500">
+        <div className="flex items-center justify-between px-4 py-2.5 bg-surface-100/90 dark:bg-surface-900 border-t border-surface-200 dark:border-surface-800 text-[11px] text-surface-500">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="px-1 py-0.5 bg-surface-800 rounded border border-surface-700 text-[10px]">↑</kbd>{' '}
-              <kbd className="px-1 py-0.5 bg-surface-800 rounded border border-surface-700 text-[10px]">↓</kbd> to navigate
+              <kbd className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 rounded-md border border-surface-300 dark:border-surface-700 text-[10px] font-mono">↑</kbd>{' '}
+              <kbd className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 rounded-md border border-surface-300 dark:border-surface-700 text-[10px] font-mono">↓</kbd> to navigate
             </span>
             <span>
-              <kbd className="px-1 py-0.5 bg-surface-800 rounded border border-surface-700 text-[10px]">↵</kbd> to select
+              <kbd className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 rounded-md border border-surface-300 dark:border-surface-700 text-[10px] font-mono">↵</kbd> to select
             </span>
           </div>
-          <span>ChronoCraft v1.0</span>
+          <span className="font-semibold text-primary-600 dark:text-primary-400">ChronoCraft</span>
         </div>
       </div>
     </div>

@@ -10,8 +10,7 @@ import CategoryModal from './components/CategoryModal';
 
 /**
  * TasksView — Main tasks page: list view, kanban view, filters, CRUD modals.
- *
- * Mounted as a protected route — taskStore.init() loads tasks + categories.
+ * Harmonized for light and dark mode.
  */
 export default function TasksView() {
   const {
@@ -81,14 +80,14 @@ export default function TasksView() {
       {/* ── Page header ─────────────────────────────────────────────── */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-surface-100">Tasks</h1>
+          <h1 className="text-xl font-bold text-surface-900 dark:text-surface-100">Tasks</h1>
           <p className="text-sm text-surface-500 mt-0.5">
             {tasks.length} {tasks.length === 1 ? 'task' : 'tasks'}
           </p>
         </div>
         <button
           onClick={() => openCreateModal()}
-          className="btn-primary"
+          className="btn-primary shadow-warm-sm"
         >
           <Plus size={16} />
           New Task
@@ -98,14 +97,14 @@ export default function TasksView() {
       {/* ── Error banner ─────────────────────────────────────────────── */}
       {error && (
         <div
-          className="flex gap-2 p-3 rounded-lg bg-danger-500/10
-                     border border-danger-500/30 text-danger-400 text-sm"
+          className="flex gap-2 p-3.5 rounded-2xl bg-danger-500/10
+                     border border-danger-500/30 text-danger-600 dark:text-danger-400 text-sm shadow-warm-sm"
           onClick={clearError}
           role="alert"
         >
           <span>⚠</span>
           <span className="flex-1">{error}</span>
-          <button className="text-danger-400 hover:text-danger-300">✕</button>
+          <button className="text-danger-500 hover:text-danger-600">✕</button>
         </div>
       )}
 
@@ -120,14 +119,14 @@ export default function TasksView() {
         {isLoading && tasks.length === 0 ? (
           /* Initial loading spinner */
           <div className="flex items-center justify-center h-40">
-            <Loader2 size={28} className="animate-spin text-primary-400" />
+            <Loader2 size={28} className="animate-spin text-primary-500" />
           </div>
         ) : tasks.length === 0 ? (
           /* Empty state */
           <div className="flex flex-col items-center justify-center h-52 gap-3">
-            <ClipboardList size={36} className="text-surface-600" />
+            <ClipboardList size={36} className="text-surface-400 dark:text-surface-600" />
             <p className="text-surface-500 text-sm">No tasks found.</p>
-            <button onClick={() => openCreateModal()} className="btn-primary text-sm py-1.5 px-4">
+            <button onClick={() => openCreateModal()} className="btn-primary text-sm py-1.5 px-4 shadow-warm-sm">
               <Plus size={14} /> Create your first task
             </button>
           </div>
@@ -141,7 +140,7 @@ export default function TasksView() {
           />
         ) : (
           /* List view */
-          <div className="space-y-2 overflow-y-auto h-full pr-1">
+          <div className="space-y-2.5 overflow-y-auto h-full pr-1">
             {tasks.map((task) => (
               <TaskCard
                 key={task._id}
@@ -158,20 +157,20 @@ export default function TasksView() {
       {/* ── Delete confirmation dialog ───────────────────────────────── */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4
-                        bg-black/60 backdrop-blur-sm">
-          <div className="bg-surface-800 border border-surface-700 rounded-2xl
-                          shadow-2xl p-6 max-w-sm w-full space-y-4 animate-fade-in">
-            <h3 className="text-base font-semibold text-surface-100">Delete task?</h3>
-            <p className="text-sm text-surface-400">
-              <strong className="text-surface-200">&ldquo;{deleteTarget.title}&rdquo;</strong> will be
+                        bg-surface-950/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-surface-50 dark:bg-surface-800 border border-surface-300 dark:border-surface-700/80 rounded-3xl
+                          shadow-warm-lg dark:shadow-2xl p-6 max-w-sm w-full space-y-4 animate-slide-up">
+            <h3 className="text-base font-bold text-surface-900 dark:text-surface-100">Delete task?</h3>
+            <p className="text-sm text-surface-600 dark:text-surface-400">
+              <strong className="text-surface-900 dark:text-surface-200">&ldquo;{deleteTarget.title}&rdquo;</strong> will be
               permanently deleted. This cannot be undone.
             </p>
-            <div className="flex justify-end gap-2">
-              <button onClick={cancelDelete} className="btn-ghost">Cancel</button>
+            <div className="flex justify-end gap-2 pt-2 border-t border-surface-200 dark:border-surface-700">
+              <button onClick={cancelDelete} className="btn-ghost text-xs py-2 px-3.5">Cancel</button>
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="btn-danger"
+                className="btn-danger text-xs py-2 px-4 shadow-sm"
               >
                 {isDeleting
                   ? <Loader2 size={14} className="animate-spin" />

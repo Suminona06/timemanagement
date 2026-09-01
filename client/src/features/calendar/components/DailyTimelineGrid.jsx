@@ -90,7 +90,7 @@ export default function DailyTimelineGrid({
   return (
     <div
       ref={containerRef}
-      className="relative flex-1 overflow-y-auto bg-surface-900 border border-surface-700 rounded-2xl shadow-inner max-h-[720px] select-none"
+      className="relative flex-1 overflow-y-auto bg-surface-50 dark:bg-surface-900 border border-surface-300 dark:border-surface-700/80 rounded-2xl shadow-warm-sm max-h-[720px] select-none"
     >
       {/* Grid Canvas */}
       <div className="relative min-w-[500px]" style={{ height: 24 * HOUR_HEIGHT }}>
@@ -102,17 +102,17 @@ export default function DailyTimelineGrid({
               key={hour}
               style={{ top: hour * HOUR_HEIGHT, height: HOUR_HEIGHT }}
               onClick={(e) => handleGridClick(e, hour)}
-              className="hour-slot absolute inset-x-0 flex border-b border-surface-800/80 hover:bg-surface-800/30 transition-colors cursor-pointer group"
+              className="hour-slot absolute inset-x-0 flex border-b border-surface-200 dark:border-surface-800/80 hover:bg-surface-100 dark:hover:bg-surface-800/30 transition-colors cursor-pointer group"
             >
               {/* Time Label Column */}
-              <div className="w-16 shrink-0 text-right pr-3 -mt-2.5 text-xs font-mono text-surface-500 group-hover:text-surface-300 transition-colors">
+              <div className="w-16 shrink-0 text-right pr-3 -mt-2.5 text-xs font-mono text-surface-500 group-hover:text-surface-800 dark:group-hover:text-surface-200 transition-colors">
                 {hourLabel}
               </div>
 
               {/* 30-minute subtle dashed divider */}
-              <div className="flex-1 relative border-l border-surface-700">
+              <div className="flex-1 relative border-l border-surface-200 dark:border-surface-700">
                 <div
-                  className="absolute inset-x-0 border-b border-surface-800/40 border-dashed"
+                  className="absolute inset-x-0 border-b border-surface-200/60 dark:border-surface-800/40 border-dashed"
                   style={{ top: HOUR_HEIGHT / 2 }}
                 />
               </div>
@@ -126,7 +126,7 @@ export default function DailyTimelineGrid({
             style={{ top: currentMinutesFromMidnight * (HOUR_HEIGHT / 60) }}
             className="absolute inset-x-0 z-30 flex items-center pointer-events-none"
           >
-            <div className="w-14 text-right pr-2 text-[10px] font-mono font-bold text-danger-400">
+            <div className="w-14 text-right pr-2 text-[10px] font-mono font-bold text-danger-500">
               {format(now, 'HH:mm')}
             </div>
             <div className="w-2.5 h-2.5 rounded-full bg-danger-500 shrink-0 -ml-1.5 shadow-sm" />

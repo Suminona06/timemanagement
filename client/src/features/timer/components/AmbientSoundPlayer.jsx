@@ -1,18 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  Music2,
   Play,
   Pause,
   Volume2,
   VolumeX,
   ChevronDown,
   ChevronUp,
-  Wifi,
 } from 'lucide-react';
 import { createAmbientEngine, AMBIENT_TRACKS, isAmbientSupported } from '../../../utils/ambientSynthesizer';
 
 /**
  * AmbientSoundPlayer — Collapsible ambient soundscape widget for the Focus Room.
+ * Harmonized for light and dark mode.
  *
  * Props:
  *   timerStatus   — 'idle' | 'running' | 'paused' (from timerStore)
@@ -124,10 +123,10 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
   if (!supported) return null;
 
   return (
-    <div className={`w-full max-w-lg mx-auto rounded-2xl border transition-all duration-200 ${
+    <div className={`w-full max-w-lg mx-auto rounded-3xl border transition-all duration-200 shadow-warm-sm ${
       isExpanded
-        ? 'bg-surface-800 border-surface-700 shadow-lg'
-        : 'bg-surface-800/50 border-surface-700/50'
+        ? 'bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700 shadow-warm-md'
+        : 'bg-surface-50/80 dark:bg-surface-800/50 border-surface-300 dark:border-surface-700/50'
     }`}>
       {/* ── Header bar (always visible) ─────────────────────────────────── */}
       <div
@@ -140,7 +139,7 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
             {[1, 3, 2, 4, 1.5].map((h, i) => (
               <span
                 key={i}
-                className={`w-0.5 bg-primary-400 rounded-full transition-all ${isPlaying ? 'animate-pulse' : ''}`}
+                className={`w-0.5 bg-primary-500 rounded-full transition-all ${isPlaying ? 'animate-pulse' : ''}`}
                 style={{
                   height: `${h * 4}px`,
                   animationDelay: `${i * 0.15}s`,
@@ -151,10 +150,10 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
           </div>
 
           <div>
-            <p className="text-xs font-semibold text-surface-200">
+            <p className="text-xs font-bold text-surface-800 dark:text-surface-200">
               Ambient Sounds
               {isPlaying && (
-                <span className="ml-2 text-primary-400 font-normal">
+                <span className="ml-2 text-primary-600 dark:text-primary-400 font-semibold">
                   {currentTrack?.emoji} {currentTrack?.label}
                 </span>
               )}
@@ -169,17 +168,17 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
           {/* Quick play/pause inline (visible even when collapsed) */}
           <button
             onClick={(e) => { e.stopPropagation(); handleTogglePlay(); }}
-            className={`flex items-center justify-center w-7 h-7 rounded-lg transition-colors ${
+            className={`flex items-center justify-center w-7 h-7 rounded-xl transition-colors ${
               isPlaying
-                ? 'bg-primary-500/20 text-primary-400 hover:bg-primary-500/30'
-                : 'bg-surface-700 text-surface-400 hover:text-surface-200'
+                ? 'bg-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-500/30'
+                : 'bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-200'
             }`}
             title={isPlaying ? 'Pause ambient' : 'Play ambient'}
           >
             {isPlaying ? <Pause size={13} /> : <Play size={13} />}
           </button>
 
-          <button className="text-surface-500 hover:text-surface-300 transition-colors">
+          <button className="text-surface-400 hover:text-surface-700 dark:hover:text-surface-300 transition-colors">
             {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
           </button>
         </div>
@@ -187,7 +186,7 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
 
       {/* ── Expanded panel ──────────────────────────────────────────────── */}
       {isExpanded && (
-        <div className="px-4 pb-4 space-y-4 border-t border-surface-700/50 pt-3">
+        <div className="px-4 pb-4 space-y-4 border-t border-surface-200 dark:border-surface-700/50 pt-3">
 
           {/* Track Grid */}
           <div className="grid grid-cols-5 gap-1.5">
@@ -197,14 +196,14 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
                 type="button"
                 onClick={() => handleTrackChange(track.key)}
                 title={track.description}
-                className={`flex flex-col items-center gap-1 p-2 rounded-xl border text-center transition-all ${
+                className={`flex flex-col items-center gap-1 p-2 rounded-2xl border text-center transition-all ${
                   activeTrack === track.key
-                    ? 'bg-primary-500/15 border-primary-500/50 text-primary-300 shadow-sm shadow-primary-500/10'
-                    : 'bg-surface-850 border-surface-700/50 text-surface-400 hover:text-surface-200 hover:bg-surface-700'
+                    ? 'bg-primary-500/15 border-primary-500/50 text-primary-700 dark:text-primary-300 shadow-sm shadow-primary-500/10 font-bold'
+                    : 'bg-surface-100 dark:bg-surface-850 border-surface-200 dark:border-surface-700/50 text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-200 hover:bg-surface-200 dark:hover:bg-surface-700'
                 }`}
               >
                 <span className="text-lg leading-none">{track.emoji}</span>
-                <span className="text-[10px] font-medium leading-tight">{track.label}</span>
+                <span className="text-[10px] font-semibold leading-tight">{track.label}</span>
               </button>
             ))}
           </div>
@@ -214,7 +213,7 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
             <button
               type="button"
               onClick={handleMuteToggle}
-              className="text-surface-400 hover:text-surface-200 shrink-0 transition-colors"
+              className="text-surface-500 hover:text-surface-800 dark:hover:text-surface-200 shrink-0 transition-colors"
               title={isMuted ? 'Unmute' : 'Mute'}
             >
               {isMuted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -230,7 +229,7 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
               className="flex-1 accent-primary-500 cursor-pointer"
             />
 
-            <span className="text-[11px] font-mono text-surface-400 w-8 text-right shrink-0">
+            <span className="text-[11px] font-mono text-surface-500 w-8 text-right shrink-0">
               {isMuted ? '—' : `${volume}%`}
             </span>
           </div>
@@ -243,8 +242,8 @@ export default function AmbientSoundPlayer({ timerStatus = 'idle', autoPauseOnId
                 : 'Plays independently of timer state'}
             </p>
             {isPlaying && (
-              <div className="flex items-center gap-1 text-[10px] text-success-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-success-400 animate-pulse" />
+              <div className="flex items-center gap-1 text-[10px] text-pastel-matcha-dark dark:text-pastel-matcha font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-pastel-matcha-dark dark:bg-pastel-matcha animate-pulse" />
                 Playing
               </div>
             )}

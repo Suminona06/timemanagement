@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   ExternalLink,
   X,
-  Play,
   Loader2,
   Link,
   Sparkles,
@@ -16,8 +15,6 @@ import {
 import {
   parseMediaUrl,
   MEDIA_PRESETS,
-  isYouTubeUrl,
-  isSpotifyUrl,
 } from '../../../utils/mediaEmbedUtils';
 import useAuthStore from '../../../stores/authStore';
 
@@ -40,6 +37,7 @@ function SpotifyIcon({ size = 14 }) {
 
 /**
  * ExternalMediaEmbed — Compact embedded media player for YouTube and Spotify.
+ * Harmonized for light and dark mode.
  *
  * Props:
  *   initialUrl    — Pre-fill the URL input (optional)
@@ -145,14 +143,14 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
   };
 
   const PlatformIcon = activeEmbed?.platform === 'spotify' ? SpotifyIcon : YouTubeIcon;
-  const platformColor = activeEmbed?.platform === 'spotify' ? 'text-green-400' : 'text-red-400';
+  const platformColor = activeEmbed?.platform === 'spotify' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
   const platformBg = activeEmbed?.platform === 'spotify' ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30';
 
   return (
-    <div className={`w-full rounded-2xl border transition-all duration-200 ${
+    <div className={`w-full rounded-3xl border transition-all duration-200 shadow-warm-sm ${
       isExpanded
-        ? 'bg-surface-800 border-surface-700 shadow-lg'
-        : 'bg-surface-800/50 border-surface-700/50'
+        ? 'bg-surface-50 dark:bg-surface-800 border-surface-300 dark:border-surface-700 shadow-warm-md'
+        : 'bg-surface-50/80 dark:bg-surface-800/50 border-surface-300 dark:border-surface-700/50'
     }`}>
       {/* ── Header bar ──────────────────────────────────────────────────── */}
       <div
@@ -161,14 +159,14 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
       >
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1.5">
-            <span className="text-red-400"><YouTubeIcon size={14} /></span>
-            <span className="text-green-400"><SpotifyIcon size={14} /></span>
+            <span className="text-red-500"><YouTubeIcon size={14} /></span>
+            <span className="text-green-500"><SpotifyIcon size={14} /></span>
           </div>
           <div>
-            <p className="text-xs font-semibold text-surface-200">
+            <p className="text-xs font-bold text-surface-800 dark:text-surface-200">
               External Music
               {activeEmbed && (
-                <span className={`ml-2 font-normal ${platformColor}`}>
+                <span className={`ml-2 font-semibold ${platformColor}`}>
                   {activeEmbed.platform === 'youtube' ? '▶ YouTube' : '♫ Spotify'}
                 </span>
               )}
@@ -183,14 +181,14 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
           {activeEmbed ? (
             <button
               onClick={(e) => { e.stopPropagation(); handleClose(); }}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] text-danger-400 bg-danger-500/10 hover:bg-danger-500/20 border border-danger-500/30 transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] text-danger-600 dark:text-danger-400 bg-danger-500/10 hover:bg-danger-500/20 border border-danger-500/30 font-bold transition-colors"
             >
               <X size={11} /> Close
             </button>
           ) : (
             <button
               onClick={(e) => { e.stopPropagation(); setIsExpanded((v) => !v); }}
-              className="text-surface-500 hover:text-surface-300 transition-colors"
+              className="text-surface-400 hover:text-surface-700 dark:hover:text-surface-300 transition-colors"
             >
               {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
             </button>
@@ -202,41 +200,41 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
       {activeEmbed && (
         <div className="px-4 pb-4 space-y-3">
           {/* Source label */}
-          <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[11px] ${platformBg} ${platformColor}`}>
+          <div className={`flex items-center gap-1.5 px-3 py-2 rounded-2xl border text-[11px] font-semibold ${platformBg} ${platformColor}`}>
             <PlatformIcon size={12} />
             <span className="truncate flex-1 font-mono">{activeEmbed.label}</span>
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); handleToggleBookmark(); }}
-              className={`p-1 rounded transition-colors ${
+              className={`p-1 rounded-lg transition-colors ${
                 isBookmarked
-                  ? 'text-amber-400 hover:text-amber-300'
-                  : 'text-surface-400 hover:text-surface-200'
+                  ? 'text-pastel-chai-dark dark:text-pastel-chai hover:opacity-80'
+                  : 'text-surface-400 hover:text-surface-700 dark:hover:text-surface-200'
               }`}
               title={isBookmarked ? 'Remove from Saved Stations' : 'Bookmark to My Saved Stations'}
             >
-              {isBookmarked ? <BookmarkCheck size={13} /> : <Bookmark size={13} />}
+              {isBookmarked ? <BookmarkCheck size={14} /> : <Bookmark size={14} />}
             </button>
             <a
               href={activeEmbed.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="shrink-0 opacity-60 hover:opacity-100 p-1"
+              className="shrink-0 opacity-70 hover:opacity-100 p-1"
               title="Open in new tab"
             >
-              <ExternalLink size={11} />
+              <ExternalLink size={12} />
             </a>
           </div>
 
           {/* Responsive iframe container */}
-          <div className="relative rounded-xl overflow-hidden bg-black">
+          <div className="relative rounded-2xl overflow-hidden bg-black shadow-warm-sm">
             {/* Loading skeleton */}
             {!iframeReady && (
-              <div className="absolute inset-0 flex items-center justify-center bg-surface-900 z-10">
+              <div className="absolute inset-0 flex items-center justify-center bg-surface-100 dark:bg-surface-900 z-10">
                 <div className="flex flex-col items-center gap-2">
-                  <Loader2 size={22} className="animate-spin text-primary-400" />
-                  <p className="text-[10px] text-surface-500">Loading player…</p>
+                  <Loader2 size={22} className="animate-spin text-primary-500" />
+                  <p className="text-[10px] text-surface-500 font-medium">Loading player…</p>
                 </div>
               </div>
             )}
@@ -257,7 +255,7 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
                 title="Spotify Music Player"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy"
-                className="w-full rounded-xl"
+                className="w-full rounded-2xl"
                 style={{ height: compact ? '152px' : '200px' }}
                 onLoad={() => setIframeReady(true)}
               />
@@ -268,24 +266,24 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
 
       {/* ── Expanded panel (no active embed) ────────────────────────────── */}
       {isExpanded && !activeEmbed && (
-        <div className="px-4 pb-4 space-y-4 border-t border-surface-700/50 pt-3">
+        <div className="px-4 pb-4 space-y-4 border-t border-surface-200 dark:border-surface-700/50 pt-3">
 
           {/* Custom URL Input */}
           {showInput ? (
             <form onSubmit={handleInputSubmit} className="space-y-2">
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <Link size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-500" />
+                  <Link size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
                   <input
                     ref={inputRef}
                     type="url"
                     value={inputUrl}
                     onChange={(e) => { setInputUrl(e.target.value); setInputError(''); }}
                     placeholder="Paste YouTube or Spotify URL…"
-                    className="input pl-8 text-xs"
+                    className="input pl-8 text-xs shadow-warm-sm"
                   />
                 </div>
-                <button type="submit" className="btn-primary px-3 py-2 text-xs gap-1.5">
+                <button type="submit" className="btn-primary px-3.5 py-2 text-xs gap-1.5 shadow-warm-sm">
                   <Check size={13} /> Load
                 </button>
                 <button
@@ -298,7 +296,7 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
               </div>
 
               {inputError && (
-                <div className="flex items-center gap-1.5 text-[11px] text-danger-400">
+                <div className="flex items-center gap-1.5 text-[11px] text-danger-500 font-medium">
                   <AlertCircle size={12} />
                   {inputError}
                 </div>
@@ -311,7 +309,7 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
           ) : (
             <button
               onClick={() => setShowInput(true)}
-              className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl border border-dashed border-surface-600 text-surface-400 text-xs hover:border-primary-500/50 hover:text-primary-400 hover:bg-primary-500/5 transition-all"
+              className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border border-dashed border-surface-300 dark:border-surface-600 text-surface-500 text-xs hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-500/5 transition-all"
             >
               <Link size={13} />
               Paste custom YouTube or Spotify URL…
@@ -321,7 +319,7 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
           {/* My Saved Stations (if any) */}
           {savedLinks.length > 0 && (
             <div className="space-y-2">
-              <p className="text-[10px] font-semibold text-primary-400 uppercase tracking-wider flex items-center gap-1.5">
+              <p className="text-[10px] font-bold text-primary-600 dark:text-primary-400 uppercase tracking-wider flex items-center gap-1.5">
                 <Bookmark size={11} />
                 My Saved Stations
               </p>
@@ -334,15 +332,15 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
                       setInputUrl(saved.url);
                       loadUrl(saved.url);
                     }}
-                    className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-surface-850 border border-primary-500/30 hover:bg-surface-700 text-left transition-all group"
+                    className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-surface-100 dark:bg-surface-850 border border-primary-500/30 hover:bg-surface-200 dark:hover:bg-surface-700 text-left transition-all group shadow-warm-sm"
                   >
                     <span className="text-base shrink-0">
                       {saved.platform === 'spotify' ? '🎧' : '📺'}
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1">
-                        <span className="text-[11px] font-medium text-surface-200 truncate">{saved.label || saved.url}</span>
-                        <span className={`shrink-0 ${saved.platform === 'spotify' ? 'text-green-400' : 'text-red-400'}`}>
+                        <span className="text-[11px] font-bold text-surface-800 dark:text-surface-200 truncate">{saved.label || saved.url}</span>
+                        <span className={`shrink-0 ${saved.platform === 'spotify' ? 'text-green-500' : 'text-red-500'}`}>
                           {saved.platform === 'spotify' ? <SpotifyIcon size={10} /> : <YouTubeIcon size={10} />}
                         </span>
                       </div>
@@ -356,7 +354,7 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
 
           {/* Preset Grid */}
           <div className="space-y-2">
-            <p className="text-[10px] font-semibold text-surface-500 uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-[10px] font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles size={11} />
               Popular Stations
             </p>
@@ -367,13 +365,13 @@ export default function ExternalMediaEmbed({ initialUrl = '', onUrlSaved, compac
                   key={preset.key}
                   type="button"
                   onClick={() => handlePresetClick(preset)}
-                  className="flex items-center gap-2 px-2.5 py-2 rounded-lg bg-surface-850 border border-surface-700/50 hover:bg-surface-700 hover:border-surface-600 text-left transition-all group"
+                  className="flex items-center gap-2 px-3 py-2 rounded-2xl bg-surface-100 dark:bg-surface-850 border border-surface-200 dark:border-surface-700/50 hover:bg-surface-200 dark:hover:bg-surface-700 text-left transition-all group shadow-warm-sm"
                 >
                   <span className="text-base shrink-0">{preset.emoji}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1">
-                      <span className="text-[11px] font-medium text-surface-200 truncate">{preset.label}</span>
-                      <span className={`shrink-0 ${preset.platform === 'spotify' ? 'text-green-400' : 'text-red-400'}`}>
+                      <span className="text-[11px] font-bold text-surface-800 dark:text-surface-200 truncate">{preset.label}</span>
+                      <span className={`shrink-0 ${preset.platform === 'spotify' ? 'text-green-500' : 'text-red-500'}`}>
                         {preset.platform === 'spotify' ? <SpotifyIcon size={10} /> : <YouTubeIcon size={10} />}
                       </span>
                     </div>

@@ -100,14 +100,14 @@ export default function WeeklyTimelineGrid({
   };
 
   return (
-    <div className="flex flex-col flex-1 bg-surface-900 border border-surface-700 rounded-2xl shadow-inner overflow-hidden select-none">
+    <div className="flex flex-col flex-1 bg-surface-50 dark:bg-surface-900 border border-surface-300 dark:border-surface-700/80 rounded-2xl shadow-warm-sm overflow-hidden select-none">
       {/* ── Fixed Days Header Row ────────────────────────────────────────── */}
-      <div className="flex border-b border-surface-700 bg-surface-850 shrink-0">
+      <div className="flex border-b border-surface-300 dark:border-surface-700 bg-surface-100 dark:bg-surface-850 shrink-0">
         {/* Time gutter spacer */}
-        <div className="w-14 shrink-0 border-r border-surface-700" />
+        <div className="w-14 shrink-0 border-r border-surface-300 dark:border-surface-700" />
 
         {/* 7 Day Column Headers */}
-        <div className="flex-1 grid grid-cols-7 divide-x divide-surface-700">
+        <div className="flex-1 grid grid-cols-7 divide-x divide-surface-300 dark:divide-surface-700">
           {weekDays.map((day) => {
             const today = isToday(day);
             return (
@@ -117,14 +117,14 @@ export default function WeeklyTimelineGrid({
                   today ? 'bg-primary-500/10' : ''
                 }`}
               >
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-surface-400">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-surface-500">
                   {format(day, 'EEE')}
                 </div>
                 <div
                   className={`inline-flex items-center justify-center w-7 h-7 mt-0.5 rounded-full text-sm font-bold ${
                     today
                       ? 'bg-primary-500 text-white shadow-sm'
-                      : 'text-surface-200'
+                      : 'text-surface-800 dark:text-surface-200'
                   }`}
                 >
                   {format(day, 'd')}
@@ -142,7 +142,7 @@ export default function WeeklyTimelineGrid({
       >
         <div className="flex min-w-[700px]" style={{ height: 24 * HOUR_HEIGHT }}>
           {/* Time Labels Column */}
-          <div className="w-14 shrink-0 border-r border-surface-700 relative bg-surface-850/50">
+          <div className="w-14 shrink-0 border-r border-surface-300 dark:border-surface-700 relative bg-surface-100/50 dark:bg-surface-850/50">
             {HOURS.map((hour) => (
               <div
                 key={hour}
@@ -155,7 +155,7 @@ export default function WeeklyTimelineGrid({
           </div>
 
           {/* 7 Day Columns Grid */}
-          <div className="flex-1 grid grid-cols-7 divide-x divide-surface-700 relative">
+          <div className="flex-1 grid grid-cols-7 divide-x divide-surface-300 dark:divide-surface-700 relative">
             {weekDays.map((day, dayIndex) => {
               const dayLogs = logsByDay[dayIndex] || [];
               const dayTasks = tasksByDay[dayIndex] || [];
@@ -164,7 +164,7 @@ export default function WeeklyTimelineGrid({
               return (
                 <div
                   key={day.toISOString()}
-                  className={`relative h-full ${today ? 'bg-primary-500/[0.02]' : ''}`}
+                  className={`relative h-full ${today ? 'bg-primary-500/[0.03]' : ''}`}
                 >
                   {/* Horizontal Hour Lines */}
                   {HOURS.map((hour) => (
@@ -172,7 +172,7 @@ export default function WeeklyTimelineGrid({
                       key={hour}
                       style={{ top: hour * HOUR_HEIGHT, height: HOUR_HEIGHT }}
                       onClick={() => handleCellClick(day, hour)}
-                      className="absolute inset-x-0 border-b border-surface-800/80 hover:bg-surface-800/40 transition-colors cursor-pointer"
+                      className="absolute inset-x-0 border-b border-surface-200 dark:border-surface-800/80 hover:bg-surface-100 dark:hover:bg-surface-800/40 transition-colors cursor-pointer"
                     />
                   ))}
 
